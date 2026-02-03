@@ -1,70 +1,73 @@
 /*
 ================================================================================
 |                                                                              |
-|              JELLYFIN IMPROVED THEME — "Calm Seas"                           |
+|              JELLYFIN CUSTOM THEME — "Midnight Ember"                        |
 |              Based on Jellyfish by n00bcodr                                  |
-|              Modified: Eye-friendly palette, sidebar fix, refinements        |
+|              Modified: Vibrant palette, poster fix, logo removed             |
 |                                                                              |
 ================================================================================
 |                                                                              |
 |  HOW TO USE:                                                                 |
-|  Paste this ENTIRE file into Jellyfin → Dashboard → General → Custom CSS    |
+|  Option A: Paste entire file into Jellyfin → Dashboard → General → Custom   |
+|  Option B: Host on GitHub and use @import url(...)                           |
 |                                                                              |
-|  This imports the base Jellyfish theme and applies:                          |
-|  1. Softer, eye-friendly "Calm Seas" color palette                          |
-|  2. Fix for sidebar/left menu on detail pages                               |
-|  3. Better contrast and readability                                          |
-|  4. Various UI refinements                                                   |
+|  Changes from base Jellyfish:                                                |
+|  1. "Midnight Ember" warm amber/gold palette — vibrant, eye-catching         |
+|  2. Poster alignment fix on detail pages                                     |
+|  3. Jellyfish logo removed (clean header)                                    |
+|  4. Sidebar/left menu fix on detail pages                                    |
+|  5. Dark glass header with proper text colors                                |
+|  6. Various UI refinements                                                   |
 |                                                                              |
 ================================================================================
 */
 
 /* ~~~~~~~~~~~~~~~~~~~~ BASE THEME IMPORT ~~~~~~~~~~~~~~~~~~~~ */
-/* Import the original Jellyfish theme — gets updates automatically */
 @import url('https://cdn.jsdelivr.net/gh/n00bcodr/jellyfish@main/theme.css');
 
 
 /* ===================================================================
-   1. EYE-FRIENDLY COLOR PALETTE — "Calm Seas"
+   1. COLOR PALETTE — "Midnight Ember"
    
-   Design principles applied:
-   - No pure black backgrounds (reduces eye strain)
-   - Desaturated accent colors (prevents optical vibrations)
-   - Soft off-white text (avoids halation effect)
-   - Dark navy base with subtle warmth
-   - Follows Google Material Design dark theme guidance
+   Warm amber/gold on deep dark backgrounds — high contrast,
+   premium feel, extremely visible accents that "pop" without
+   causing eye strain. Warm tones are more comfortable than 
+   cool blues for extended viewing sessions.
    =================================================================== */
 
 :root {
-    /* --- Accent Color (Soft Muted Teal) --- */
-    --primary-r: 118;
-    --primary-g: 180;
-    --primary-b: 196;
-    /* Result: #76B4C4 — calming teal, desaturated enough to not vibrate on dark bg */
+    /* --- Accent Color (Warm Amber/Gold) --- */
+    --primary-r: 232;
+    --primary-g: 168;
+    --primary-b: 75;
+    /* Result: #E8A84B — warm gold, rich and vibrant */
     --primary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 1.0);
-    --secondary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.42);
+    --secondary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5);
 
-    /* --- Background Colors (Dark Navy — NOT pure black) --- */
-    --primary-background-color: #0e1219;       /* Main background: deep blue-black */
-    --secondary-background-color: #151b25;     /* Drawer, cards, dialogs */
-    --tertiary-background-color: #1c2330;      /* Popovers, elevated surfaces */
+    /* --- Background Colors (Deep Dark — NOT pure black) --- */
+    --primary-background-color: #0c0f14;       /* Main background: very deep blue-black */
+    --secondary-background-color: #13171f;     /* Drawer, cards, dialogs */
+    --tertiary-background-color: #1a1f2a;      /* Popovers, elevated surfaces */
 
-    /* --- Transparent Backgrounds (neutral tint, not accent-tinted) --- */
-    --primary-background-transparent: rgba(14, 18, 25, 0.65);
-    --secondary-background-transparent: rgba(21, 27, 37, 0.72);
+    /* --- Transparent Backgrounds --- */
+    --primary-background-transparent: rgba(12, 15, 20, 0.65);
+    --secondary-background-transparent: rgba(19, 23, 31, 0.72);
 
     /* --- Surface & Input Colors --- */
-    --alt-accent-color: #1a2030;               /* Subtle card/input backgrounds */
+    --alt-accent-color: #171c26;               /* Card/input backgrounds */
 
     /* --- Text Colors --- */
-    --text-color: #e4eaf1;                     /* Text ON accent backgrounds (buttons, badges) */
-    --header-text-color: #c8d1dc;              /* Header navigation text */
+    --text-color: #f0ece5;                     /* Text ON accent backgrounds (buttons, badges) */
+    --header-text-color: #d1cdc6;              /* Header navigation text */
 
     /* --- Header (Dark frosted glass) --- */
-    --header-background-color: rgba(14, 18, 25, 0.78);
+    --header-background-color: rgba(12, 15, 20, 0.82);
 
-    /* --- Logo (keep Jellyfish default or override) --- */
-    /* --logo: url("https://cdn.jsdelivr.net/gh/n00bcodr/jellyfish/logos/jellyfish.png"); */
+    /* --- Remove Jellyfish Logo --- */
+    --logo: none;
+
+    /* --- No background image --- */
+    --background-image: none;
 
     /* --- Alternate Accents (for active device cards) --- */
     --primary-alt1: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 1);
@@ -76,11 +79,72 @@
 
 
 /* ===================================================================
-   2. SIDEBAR / LEFT MENU FIX
+   2. REMOVE JELLYFISH LOGO FROM HEADER
+   =================================================================== */
+
+/* Hide the Jellyfish logo entirely */
+.pageTitleWithDefaultLogo {
+    background-image: none !important;
+    display: none !important;
+}
+
+/* Also hide any logo image element */
+.pageTitleWithLogo {
+    background-image: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+/* Clean up admin drawer logo */
+.adminDrawerLogo img,
+.imgLogoIcon {
+    display: none !important;
+}
+
+
+/* ===================================================================
+   3. POSTER ALIGNMENT FIX ON DETAIL PAGES
+   
+   The z-index overrides for sidebar fix were too aggressive — 
+   unsetting z-index on detailPageWrapperContainer and 
+   detailPagePrimaryContainer broke the poster positioning context.
+   Now only targeting the actual blocking layers.
+   =================================================================== */
+
+/* Reset the poster positioning to work correctly */
+.layout-desktop .detailImageContainer .card {
+    top: 9em !important;
+    width: 18.3vw !important;
+    position: relative !important;
+}
+
+/* Ensure the image container participates in layout properly */
+.detailImageContainer {
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* Keep the detail page layout intact */
+.layout-desktop .detailPagePrimaryContainer {
+    position: relative !important;
+}
+
+.layout-desktop .detailPageWrapperContainer {
+    position: relative !important;
+}
+
+
+/* ===================================================================
+   4. SIDEBAR / LEFT MENU FIX
    
    Problem: Sidebar doesn't work when viewing movie/show detail pages.
    Root cause: Detail page backdrop and content create stacking contexts 
    that capture pointer events above the sidebar's z-index.
+   Fix: Only target the actual blocking layers (backdrop, background),
+   not the layout containers.
    =================================================================== */
 
 /* Ensure sidebar is ALWAYS above all page content */
@@ -96,11 +160,9 @@
     pointer-events: auto !important;
 }
 
-/* Prevent detail page elements from creating blocking stacking contexts */
+/* Only unset z-index on the actual blocking layers — NOT on layout containers */
 .itemBackdrop,
-.backgroundContainer,
-.detailPageWrapperContainer,
-.detailPagePrimaryContainer {
+.backgroundContainer {
     z-index: unset !important;
 }
 
@@ -129,10 +191,9 @@
 
 
 /* ===================================================================
-   3. HEADER TEXT COLOR FIX
+   5. HEADER TEXT COLOR FIX
    
-   Since we switched from a light glass header to a dark glass header,
-   all header text/icons need to be light instead of dark.
+   Dark glass header needs light text/icons instead of dark.
    =================================================================== */
 
 /* Fix header tab and right-section text for dark header background */
@@ -147,7 +208,7 @@
     color: var(--header-text-color) !important;
 }
 
-/* Active tab stays bright white for clarity */
+/* Active tab — bright warm white for clarity */
 .emby-tab-button-active > .emby-button-foreground {
     color: var(--text-color) !important;
 }
@@ -161,10 +222,10 @@
 .layout-mobile .headroom--top .headerRight {
     background: var(--header-background-color) !important;
     color: var(--header-text-color) !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
-/* Fix: header icons in right section on hover */
+/* Header icons on hover — amber accent */
 .headerRight .paper-icon-button-light:hover,
 .headerRight .paper-icon-button-light:hover:not(:disabled),
 .headerRight .paper-icon-button-light:focus,
@@ -172,52 +233,52 @@
     color: var(--primary-accent-color) !important;
 }
 
-/* Tab hover text should be white (on accent bg) */
+/* Tab hover text should be warm white (on accent bg) */
 .raised:hover .homeLibraryText,
 .emby-tab-button:hover .emby-button-foreground {
     color: var(--text-color) !important;
 }
 
-/* Header shadow — softer for dark glass */
+/* Header shadow — subtle warm glow */
 .headerTabs,
 .headerRight {
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.45) !important;
 }
 
-/* Mobile header text shadow — softer */
+/* Mobile header text shadow */
 .layout-mobile .emby-button-foreground {
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7) !important;
 }
 
 
 /* ===================================================================
-   4. IMPROVED GENERAL TEXT READABILITY
+   6. TEXT READABILITY — WARM NEUTRALS
    =================================================================== */
 
-/* Softer body text — not pure white, reduces halation */
+/* Body text — warm off-white, comfortable for long sessions */
 body,
 .layout-desktop,
 .layout-mobile,
 .layout-tv {
-    color: #c8d1dc !important;
+    color: #d1cdc6 !important;
 }
 
-/* Section titles — use accent but slightly softer */
+/* Section titles — warm amber accent */
 .sectionTitle,
 .headerUsername {
     color: var(--primary-accent-color) !important;
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4) !important;
+    text-shadow: 0 1px 12px rgba(232, 168, 75, 0.2) !important;
 }
 
-/* Card text — ensure readability */
+/* Card text — warm gray, readable */
 .cardText {
-    color: #b8c2ce !important;
+    color: #c4bfb6 !important;
 }
 
-/* Secondary/muted text */
+/* Secondary/muted text — softer warm gray */
 .cardText-secondary,
 .secondaryText {
-    color: #7d8a9a !important;
+    color: #8a857c !important;
 }
 
 /* Selected MUI items — white text on accent */
@@ -228,25 +289,25 @@ body,
 
 
 /* ===================================================================
-   5. IMPROVED SIDEBAR STYLING
+   7. SIDEBAR STYLING — WARM TONES
    =================================================================== */
 
-/* Sidebar background — darker, more contrast with content */
+/* Sidebar background — deep dark, glass effect */
 .layout-desktop .mainDrawer:not(.dashboardDocument),
 .layout-mobile .mainDrawer {
-    background: rgba(12, 16, 22, 0.92) !important;
+    background: rgba(10, 12, 18, 0.94) !important;
     backdrop-filter: blur(40px) saturate(1.2) !important;
-    border-right: 1px solid rgba(118, 180, 196, 0.08) !important;
+    border-right: 1px solid rgba(232, 168, 75, 0.06) !important;
 }
 
-/* Sidebar nav items — improved styling */
+/* Sidebar nav items */
 .navMenuOption {
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
 }
 
-/* Selected sidebar item */
+/* Selected sidebar item — amber highlight */
 .navMenuOption-selected {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.18) !important;
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
     color: var(--primary-accent-color) !important;
     border-left: 3px solid var(--primary-accent-color) !important;
 }
@@ -259,215 +320,214 @@ body,
     border-left: 3px solid transparent !important;
 }
 
-/* MUI sidebar hover — softer */
+/* MUI sidebar hover */
 .MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:hover:not(.Mui-selected) {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.07) !important;
     translate: 0 -2px !important;
 }
 
-/* MUI sidebar default text — soft gray */
+/* MUI sidebar default text — warm gray */
 .MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) .MuiListItemIcon-root,
 .MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) {
-    color: #8a95a5 !important;
+    color: #928d85 !important;
 }
 
 
 /* ===================================================================
-   6. IMPROVED CARD & LIST ITEM STYLING
+   8. CARD & LIST ITEM STYLING — WARM ACCENTS
    =================================================================== */
 
-/* Card hover — softer glow with accent tint */
+/* Card hover — warm amber glow */
 div.card-withuserdata.card-hoverable.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
 div.groupedCard.card-hoverable.overflowSquareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
 div.card-hoverable.squareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable {
-    border: 2px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.6) !important;
-    box-shadow: 0 4px 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+    border: 2px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
+    box-shadow: 0 4px 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
 }
 
-/* List item hover — subtler lift */
+/* List item hover — warm subtle lift */
 .listItem:hover {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.06) !important;
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.05) !important;
     translate: 0 -2px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
 }
 
-/* Watched indicator — slightly softer green */
+/* Watched indicator — keep green */
 .playedIndicator {
     background: #3da83d !important;
     color: white !important;
 }
 
-/* Card overlay on hover — match theme */
+/* Card overlay on hover */
 .card-hoverable:hover .cardOverlayContainer {
-    background: rgba(14, 18, 25, 0.55) !important;
+    background: rgba(12, 15, 20, 0.55) !important;
 }
 
 
 /* ===================================================================
-   7. IMPROVED DETAIL PAGE
+   9. DETAIL PAGE IMPROVEMENTS
    =================================================================== */
 
-/* Detail section content — better contrast with page bg */
+/* Detail section content — subtle warm tint */
 .detailSectionContent {
-    background: rgba(21, 27, 37, 0.65) !important;
+    background: rgba(19, 23, 31, 0.65) !important;
     backdrop-filter: blur(var(--blur)) !important;
 }
 
-/* Track selections — match */
+/* Track selections */
 .trackSelections {
-    background: rgba(21, 27, 37, 0.65) !important;
+    background: rgba(19, 23, 31, 0.65) !important;
     backdrop-filter: blur(var(--blur)) !important;
 }
 
-/* Details group — softer bg */
+/* Details group */
 .itemDetailsGroup:has(.detailsGroupItem:not(.hide)) {
-    background: rgba(21, 27, 37, 0.55) !important;
+    background: rgba(19, 23, 31, 0.55) !important;
     backdrop-filter: blur(var(--blur)) !important;
 }
 
-/* Play button — enhanced with softer glow */
+/* Play button — warm amber glow on hover */
 .mainDetailButtons .btnPlay:hover {
     filter: brightness(115%) !important;
-    box-shadow: 0 0 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.4) !important;
+    box-shadow: 0 0 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.45) !important;
 }
 
-/* Tagline border — accent color */
+/* Tagline border — amber accent */
 h3.tagline {
     border-left-color: var(--primary-accent-color) !important;
-    color: #9aa5b4 !important;
+    color: #a39e95 !important;
 }
 
 
 /* ===================================================================
-   8. IMPROVED FORM ELEMENTS & INPUTS
+   10. FORM ELEMENTS & INPUTS
    =================================================================== */
 
-/* Input fields — slightly more visible borders */
+/* Input fields — warm subtle borders */
 .emby-input,
 .emby-textarea,
 .emby-select-withcolor {
-    border: 1px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
-    background: #171d2a !important;
-    color: #c8d1dc !important;
+    border: 1px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
+    background: #151a24 !important;
+    color: #d1cdc6 !important;
 }
 
-/* Input focus state — accent border */
+/* Input focus state — amber glow */
 .emby-input:focus,
 .emby-textarea:focus,
 .emby-select-withcolor:focus {
     border-color: var(--primary-accent-color) !important;
-    box-shadow: 0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+    box-shadow: 0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
 }
 
-/* Paper lists — match dark surfaces */
+/* Paper lists */
 .paperList {
-    background: #171d2a !important;
+    background: #151a24 !important;
 }
 
-/* Raised buttons — softer shadow */
+/* Raised buttons — warm shadow */
 .fab,
 .raised {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
 }
 
 .fab:hover,
 .raised:hover {
     transform: translateY(-1px) !important;
-    box-shadow: 0 4px 16px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.2) !important;
+    box-shadow: 0 4px 16px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.18) !important;
 }
 
 /* Select dropdowns */
 .emby-select option {
-    background-color: #1c2330 !important;
-    color: #c8d1dc !important;
+    background-color: #1a1f2a !important;
+    color: #d1cdc6 !important;
 }
 
 
 /* ===================================================================
-   9. IMPROVED PLAYER OSD
+   11. PLAYER OSD
    =================================================================== */
 
-/* Skip button — softer accent glow */
+/* Skip button — amber glow on hover */
 .skip-button:hover,
 #skipIntro .btnSkipIntro:hover {
-    box-shadow: 0 0 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
+    box-shadow: 0 0 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
 }
 
-/* Progress bar — accent color (inherited), improved track */
+/* Progress bar track */
 .mdl-slider-background-flex {
-    background: rgba(255, 255, 255, 0.12) !important;
+    background: rgba(255, 255, 255, 0.1) !important;
 }
 
-/* Up Next dialog — darker, cleaner */
+/* Up Next dialog */
 .upNextContainer:not(#skipIntro) {
-    background-color: rgba(14, 18, 25, 0.75) !important;
-    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+    background-color: rgba(12, 15, 20, 0.8) !important;
+    border: 1px solid rgba(232, 168, 75, 0.08) !important;
 }
 
-/* Toast notifications — match theme */
+/* Toast notifications */
 .toastVisible {
-    background-color: rgba(14, 18, 25, 0.88) !important;
+    background-color: rgba(12, 15, 20, 0.9) !important;
     backdrop-filter: blur(25px) !important;
-    border: 1px solid rgba(118, 180, 196, 0.12) !important;
-    color: #c8d1dc !important;
+    border: 1px solid rgba(232, 168, 75, 0.1) !important;
+    color: #d1cdc6 !important;
 }
 
 
 /* ===================================================================
-   10. IMPROVED DIALOG & POPUP STYLING
+   12. DIALOG & POPUP STYLING
    =================================================================== */
 
-/* Dialogs — match dark surface with subtle border */
+/* Dialogs */
 .dialog {
-    background-color: #151b25 !important;
-    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+    background-color: #13171f !important;
+    border: 1px solid rgba(232, 168, 75, 0.08) !important;
 }
 
-/* Dialog header/footer — darker accent */
+/* Dialog header/footer — amber tint */
 .formDialogHeader,
 .formDialogFooter {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
 }
 
 /* Dialog content */
 .formDialogContent {
-    background: rgba(21, 27, 37, 0.9) !important;
+    background: rgba(19, 23, 31, 0.92) !important;
 }
 
 /* Action sheet items hover */
-.actionSheetMenuItem.emby-button:hover,
-.listItem:hover {
+.actionSheetMenuItem.emby-button:hover {
     background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
 }
 
-/* MUI Popover/Menu — match dark theme */
+/* MUI Popover/Menu */
 .MuiMenu-paper,
 .MuiPaper-root.MuiPopover-paper {
-    background: rgba(21, 27, 37, 0.95) !important;
+    background: rgba(19, 23, 31, 0.95) !important;
     backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(118, 180, 196, 0.08) !important;
+    border: 1px solid rgba(232, 168, 75, 0.06) !important;
 }
 
 
 /* ===================================================================
-   11. DASHBOARD IMPROVEMENTS
+   13. DASHBOARD IMPROVEMENTS
    =================================================================== */
 
-/* Dashboard update banner — softer accent */
+/* Dashboard update banner — warm accent */
 .dashboardActionsContainer::before {
-    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
-    color: #b0bcc8 !important;
-    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
+    color: #b5b0a8 !important;
+    border: 1px solid rgba(232, 168, 75, 0.08) !important;
 }
 
-/* Dashboard section headings */
+/* Dashboard section headings — amber */
 .dashboardSection h3 {
     color: var(--primary-accent-color) !important;
 }
 
 /* Fieldsets in dashboard */
 fieldset.verticalSection-extrabottompadding {
-    border-color: rgba(118, 180, 196, 0.1) !important;
+    border-color: rgba(232, 168, 75, 0.08) !important;
 }
 
 /* Task progress bar */
@@ -477,24 +537,24 @@ fieldset.verticalSection-extrabottompadding {
 
 /* Alert messages */
 .MuiAlert-message {
-    color: #d8e0e8 !important;
+    color: #ddd8d0 !important;
 }
 
 /* Info banners */
 .infoBanner {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
-    border: 1px solid rgba(118, 180, 196, 0.15) !important;
-    color: #b0bcc8 !important;
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
+    border: 1px solid rgba(232, 168, 75, 0.12) !important;
+    color: #b5b0a8 !important;
 }
 
 
 /* ===================================================================
-   12. SCROLLBAR STYLING (subtle, matches theme)
+   14. SCROLLBAR STYLING
    =================================================================== */
 
-/* Show subtle scrollbars on hover for usability */
+/* Subtle amber scrollbars on hover */
 *:hover {
-    scrollbar-color: rgba(118, 180, 196, 0.2) transparent !important;
+    scrollbar-color: rgba(232, 168, 75, 0.15) transparent !important;
 }
 
 *::-webkit-scrollbar {
@@ -503,12 +563,12 @@ fieldset.verticalSection-extrabottompadding {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgba(118, 180, 196, 0.18) !important;
+    background: rgba(232, 168, 75, 0.14) !important;
     border-radius: 10px !important;
 }
 
 *::-webkit-scrollbar-thumb:hover {
-    background: rgba(118, 180, 196, 0.35) !important;
+    background: rgba(232, 168, 75, 0.3) !important;
 }
 
 *::-webkit-scrollbar-track {
@@ -517,34 +577,34 @@ fieldset.verticalSection-extrabottompadding {
 
 
 /* ===================================================================
-   13. MUSIC / NOW PLAYING BAR
+   15. MUSIC / NOW PLAYING BAR
    =================================================================== */
 
-/* App footer — match theme background */
+/* App footer */
 .appfooter {
-    background: #0e1219 !important;
-    border-top: 1px solid rgba(118, 180, 196, 0.06) !important;
+    background: #0c0f14 !important;
+    border-top: 1px solid rgba(232, 168, 75, 0.05) !important;
     border-radius: 16px 16px 0 0 !important;
 }
 
 /* Volume OSD */
 .volumeOsd {
-    background: rgba(21, 27, 37, 0.9) !important;
-    border: 1px solid rgba(118, 180, 196, 0.08) !important;
+    background: rgba(19, 23, 31, 0.92) !important;
+    border: 1px solid rgba(232, 168, 75, 0.06) !important;
 }
 
 
 /* ===================================================================
-   14. BACKDROP & LIBRARY PAGE REFINEMENTS
+   16. BACKDROP & LIBRARY PAGE REFINEMENTS
    =================================================================== */
 
-/* Library page backdrop — softer blur and darken */
+/* Library page backdrop */
 .libraryDocument.withSectionTabs .backgroundContainer {
-    backdrop-filter: blur(20px) brightness(0.28) !important;
-    background-color: rgba(14, 18, 25, 0.6) !important;
+    backdrop-filter: blur(20px) brightness(0.25) !important;
+    background-color: rgba(12, 15, 20, 0.6) !important;
 }
 
-/* Mobile backdrop — slightly more visible */
+/* Mobile backdrop */
 .layout-mobile .backdropImage {
     opacity: 0.25 !important;
 }
@@ -552,13 +612,13 @@ fieldset.verticalSection-extrabottompadding {
 /* Backdrop sidebar blending */
 .layout-desktop:has(.backgroundContainer.withBackdrop) .navMenuOption-selected,
 .layout-mobile:has(.backgroundContainer.withBackdrop) .navMenuOption-selected {
-    background: rgba(14, 18, 25, 0.55) !important;
+    background: rgba(12, 15, 20, 0.55) !important;
     backdrop-filter: blur(var(--blur)) !important;
 }
 
 
 /* ===================================================================
-   15. TV GUIDE IMPROVEMENTS
+   17. TV GUIDE IMPROVEMENTS
    =================================================================== */
 
 /* Guide date tabs — match dark header */
@@ -567,24 +627,24 @@ fieldset.verticalSection-extrabottompadding {
     color: var(--header-text-color) !important;
 }
 
-/* Active guide date tab */
+/* Active guide date tab — amber */
 button.emby-tab-button.guide-date-tab-button.emby-tab-button-active.emby-button {
     background: var(--primary-accent-color) !important;
     color: var(--text-color) !important;
-    box-shadow: 0 2px 12px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.25) !important;
+    box-shadow: 0 2px 14px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.3) !important;
 }
 
 
 /* ===================================================================
-   16. MISC REFINEMENTS
+   18. MISC REFINEMENTS
    =================================================================== */
 
-/* Alpha picker — match theme */
+/* Alpha picker */
 .alphaPickerButton {
-    color: #5a6575 !important;
+    color: #5a564f !important;
 }
 .alphaPickerButton:hover {
-    color: #c8d1dc !important;
+    color: #d1cdc6 !important;
 }
 .alphaPickerButton-selected {
     color: var(--primary-accent-color) !important;
@@ -600,53 +660,54 @@ button.emby-tab-button.guide-date-tab-button.emby-tab-button-active.emby-button 
     border: 0 !important;
 }
 
-/* Submit/cancel button improvements */
+/* Submit button — amber */
 .button-submit {
     background: var(--primary-accent-color) !important;
     color: var(--text-color) !important;
 }
 
+/* Cancel buttons — muted red */
 #btnCancel,
 #btnResetPassword,
 .button-cancel {
     background: rgba(180, 85, 85, 0.7) !important;
 }
 
-/* Checkboxes — accent color */
+/* Checkboxes — amber */
 .emby-checkbox:checked + span + .checkboxOutline {
     background: var(--primary-accent-color) !important;
     border-color: var(--primary-accent-color) !important;
 }
 
-/* Star rating spin — slower, smoother */
+/* Star rating spin */
 .starRatingContainer:hover .starIcon {
     animation: spin 1.5s ease-in-out !important;
 }
 
-/* Separator icons */
+/* Separator icons — warm */
 .separator-icon {
-    color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.6) !important;
+    color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
 }
 
-/* Login page background — if using default */
+/* Login page background */
 .layout-desktop .backgroundContainer:not(.withBackdrop):not(.backgroundContainer-transparent) {
-    background-color: #0e1219 !important;
+    background-color: #0c0f14 !important;
 }
 
 
 /* ===================================================================
-   END OF THEME IMPROVEMENTS
+   END OF THEME
    
-   Color Palette Summary — "Calm Seas":
+   Color Palette Summary — "Midnight Ember":
    ┌──────────────────────────────────────┐
-   │  Accent:     #76B4C4  (Soft Teal)   │
-   │  Primary BG: #0E1219  (Deep Navy)   │
-   │  Surface:    #151B25  (Dark Navy)   │
-   │  Elevated:   #1C2330  (Navy Gray)   │
-   │  Input BG:   #1A2030  (Muted Navy)  │
-   │  Body Text:  #C8D1DC  (Soft Gray)   │
-   │  Bright Text:#E4EAF1  (Off-White)   │
-   │  Muted Text: #7D8A9A  (Dim Gray)    │
-   │  Header BG:  rgba(14,18,25,0.78)    │
+   │  Accent:     #E8A84B  (Warm Gold)   │
+   │  Primary BG: #0C0F14  (Deep Dark)   │
+   │  Surface:    #13171F  (Dark Navy)   │
+   │  Elevated:   #1A1F2A  (Navy Gray)   │
+   │  Input BG:   #171C26  (Muted Dark)  │
+   │  Body Text:  #D1CDC6  (Warm Gray)   │
+   │  Bright Text:#F0ECE5  (Warm White)  │
+   │  Muted Text: #8A857C  (Dim Warm)    │
+   │  Header BG:  rgba(12,15,20,0.82)    │
    └──────────────────────────────────────┘
    =================================================================== */
