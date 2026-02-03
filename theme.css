@@ -1,0 +1,652 @@
+/*
+================================================================================
+|                                                                              |
+|              JELLYFIN IMPROVED THEME — "Calm Seas"                           |
+|              Based on Jellyfish by n00bcodr                                  |
+|              Modified: Eye-friendly palette, sidebar fix, refinements        |
+|                                                                              |
+================================================================================
+|                                                                              |
+|  HOW TO USE:                                                                 |
+|  Paste this ENTIRE file into Jellyfin → Dashboard → General → Custom CSS    |
+|                                                                              |
+|  This imports the base Jellyfish theme and applies:                          |
+|  1. Softer, eye-friendly "Calm Seas" color palette                          |
+|  2. Fix for sidebar/left menu on detail pages                               |
+|  3. Better contrast and readability                                          |
+|  4. Various UI refinements                                                   |
+|                                                                              |
+================================================================================
+*/
+
+/* ~~~~~~~~~~~~~~~~~~~~ BASE THEME IMPORT ~~~~~~~~~~~~~~~~~~~~ */
+/* Import the original Jellyfish theme — gets updates automatically */
+@import url('https://cdn.jsdelivr.net/gh/n00bcodr/jellyfish@main/theme.css');
+
+
+/* ===================================================================
+   1. EYE-FRIENDLY COLOR PALETTE — "Calm Seas"
+   
+   Design principles applied:
+   - No pure black backgrounds (reduces eye strain)
+   - Desaturated accent colors (prevents optical vibrations)
+   - Soft off-white text (avoids halation effect)
+   - Dark navy base with subtle warmth
+   - Follows Google Material Design dark theme guidance
+   =================================================================== */
+
+:root {
+    /* --- Accent Color (Soft Muted Teal) --- */
+    --primary-r: 118;
+    --primary-g: 180;
+    --primary-b: 196;
+    /* Result: #76B4C4 — calming teal, desaturated enough to not vibrate on dark bg */
+    --primary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 1.0);
+    --secondary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.42);
+
+    /* --- Background Colors (Dark Navy — NOT pure black) --- */
+    --primary-background-color: #0e1219;       /* Main background: deep blue-black */
+    --secondary-background-color: #151b25;     /* Drawer, cards, dialogs */
+    --tertiary-background-color: #1c2330;      /* Popovers, elevated surfaces */
+
+    /* --- Transparent Backgrounds (neutral tint, not accent-tinted) --- */
+    --primary-background-transparent: rgba(14, 18, 25, 0.65);
+    --secondary-background-transparent: rgba(21, 27, 37, 0.72);
+
+    /* --- Surface & Input Colors --- */
+    --alt-accent-color: #1a2030;               /* Subtle card/input backgrounds */
+
+    /* --- Text Colors --- */
+    --text-color: #e4eaf1;                     /* Text ON accent backgrounds (buttons, badges) */
+    --header-text-color: #c8d1dc;              /* Header navigation text */
+
+    /* --- Header (Dark frosted glass) --- */
+    --header-background-color: rgba(14, 18, 25, 0.78);
+
+    /* --- Logo (keep Jellyfish default or override) --- */
+    /* --logo: url("https://cdn.jsdelivr.net/gh/n00bcodr/jellyfish/logos/jellyfish.png"); */
+
+    /* --- Alternate Accents (for active device cards) --- */
+    --primary-alt1: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 1);
+    --primary-alt2: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.82);
+    --primary-alt3: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.65);
+    --primary-alt4: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.50);
+    --primary-alt5: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.35);
+}
+
+
+/* ===================================================================
+   2. SIDEBAR / LEFT MENU FIX
+   
+   Problem: Sidebar doesn't work when viewing movie/show detail pages.
+   Root cause: Detail page backdrop and content create stacking contexts 
+   that capture pointer events above the sidebar's z-index.
+   =================================================================== */
+
+/* Ensure sidebar is ALWAYS above all page content */
+.mainDrawer {
+    z-index: 1200 !important;
+    pointer-events: auto !important;
+}
+
+/* Sidebar overlay/mask must sit just below the drawer */
+.mainDrawer-mask,
+.mainDrawer-backdrop {
+    z-index: 1199 !important;
+    pointer-events: auto !important;
+}
+
+/* Prevent detail page elements from creating blocking stacking contexts */
+.itemBackdrop,
+.backgroundContainer,
+.detailPageWrapperContainer,
+.detailPagePrimaryContainer {
+    z-index: unset !important;
+}
+
+/* Ensure the scrollable content area in the sidebar receives clicks */
+.mainDrawer-scrollContainer {
+    pointer-events: auto !important;
+    position: relative !important;
+    z-index: 1 !important;
+}
+
+/* Ensure sidebar navigation items are always clickable */
+.navMenuOption {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Keep header and hamburger button above backdrops */
+.skinHeader {
+    z-index: 1100 !important;
+}
+
+.mainDrawerButton {
+    z-index: 1101 !important;
+    pointer-events: auto !important;
+}
+
+
+/* ===================================================================
+   3. HEADER TEXT COLOR FIX
+   
+   Since we switched from a light glass header to a dark glass header,
+   all header text/icons need to be light instead of dark.
+   =================================================================== */
+
+/* Fix header tab and right-section text for dark header background */
+.headerTabs,
+.headerRight {
+    color: var(--header-text-color) !important;
+}
+
+/* Fix header button/tab text */
+.homeLibraryText,
+.emby-button-foreground {
+    color: var(--header-text-color) !important;
+}
+
+/* Active tab stays bright white for clarity */
+.emby-tab-button-active > .emby-button-foreground {
+    color: var(--text-color) !important;
+}
+
+/* Header right section icons — light for dark header */
+.headerRight .paper-icon-button-light {
+    color: var(--header-text-color) !important;
+}
+
+/* Mobile header adjustments */
+.layout-mobile .headroom--top .headerRight {
+    background: var(--header-background-color) !important;
+    color: var(--header-text-color) !important;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Fix: header icons in right section on hover */
+.headerRight .paper-icon-button-light:hover,
+.headerRight .paper-icon-button-light:hover:not(:disabled),
+.headerRight .paper-icon-button-light:focus,
+.headerRight .paper-icon-button-light:focus:not(:disabled) {
+    color: var(--primary-accent-color) !important;
+}
+
+/* Tab hover text should be white (on accent bg) */
+.raised:hover .homeLibraryText,
+.emby-tab-button:hover .emby-button-foreground {
+    color: var(--text-color) !important;
+}
+
+/* Header shadow — softer for dark glass */
+.headerTabs,
+.headerRight {
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Mobile header text shadow — softer */
+.layout-mobile .emby-button-foreground {
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6) !important;
+}
+
+
+/* ===================================================================
+   4. IMPROVED GENERAL TEXT READABILITY
+   =================================================================== */
+
+/* Softer body text — not pure white, reduces halation */
+body,
+.layout-desktop,
+.layout-mobile,
+.layout-tv {
+    color: #c8d1dc !important;
+}
+
+/* Section titles — use accent but slightly softer */
+.sectionTitle,
+.headerUsername {
+    color: var(--primary-accent-color) !important;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Card text — ensure readability */
+.cardText {
+    color: #b8c2ce !important;
+}
+
+/* Secondary/muted text */
+.cardText-secondary,
+.secondaryText {
+    color: #7d8a9a !important;
+}
+
+/* Selected MUI items — white text on accent */
+.MuiListItemButton-root.Mui-selected .MuiListItemIcon-root,
+.MuiListItemButton-root.Mui-selected {
+    color: #ffffff !important;
+}
+
+
+/* ===================================================================
+   5. IMPROVED SIDEBAR STYLING
+   =================================================================== */
+
+/* Sidebar background — darker, more contrast with content */
+.layout-desktop .mainDrawer:not(.dashboardDocument),
+.layout-mobile .mainDrawer {
+    background: rgba(12, 16, 22, 0.92) !important;
+    backdrop-filter: blur(40px) saturate(1.2) !important;
+    border-right: 1px solid rgba(118, 180, 196, 0.08) !important;
+}
+
+/* Sidebar nav items — improved styling */
+.navMenuOption {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Selected sidebar item */
+.navMenuOption-selected {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.18) !important;
+    color: var(--primary-accent-color) !important;
+    border-left: 3px solid var(--primary-accent-color) !important;
+}
+
+/* Hover on non-selected sidebar items */
+.navMenuOption:hover:not(.navMenuOption-selected) {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
+    color: var(--primary-accent-color) !important;
+    transform: translateX(4px) !important;
+    border-left: 3px solid transparent !important;
+}
+
+/* MUI sidebar hover — softer */
+.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:hover:not(.Mui-selected) {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
+    translate: 0 -2px !important;
+}
+
+/* MUI sidebar default text — soft gray */
+.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) .MuiListItemIcon-root,
+.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) {
+    color: #8a95a5 !important;
+}
+
+
+/* ===================================================================
+   6. IMPROVED CARD & LIST ITEM STYLING
+   =================================================================== */
+
+/* Card hover — softer glow with accent tint */
+div.card-withuserdata.card-hoverable.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
+div.groupedCard.card-hoverable.overflowSquareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
+div.card-hoverable.squareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable {
+    border: 2px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.6) !important;
+    box-shadow: 0 4px 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+}
+
+/* List item hover — subtler lift */
+.listItem:hover {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.06) !important;
+    translate: 0 -2px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Watched indicator — slightly softer green */
+.playedIndicator {
+    background: #3da83d !important;
+    color: white !important;
+}
+
+/* Card overlay on hover — match theme */
+.card-hoverable:hover .cardOverlayContainer {
+    background: rgba(14, 18, 25, 0.55) !important;
+}
+
+
+/* ===================================================================
+   7. IMPROVED DETAIL PAGE
+   =================================================================== */
+
+/* Detail section content — better contrast with page bg */
+.detailSectionContent {
+    background: rgba(21, 27, 37, 0.65) !important;
+    backdrop-filter: blur(var(--blur)) !important;
+}
+
+/* Track selections — match */
+.trackSelections {
+    background: rgba(21, 27, 37, 0.65) !important;
+    backdrop-filter: blur(var(--blur)) !important;
+}
+
+/* Details group — softer bg */
+.itemDetailsGroup:has(.detailsGroupItem:not(.hide)) {
+    background: rgba(21, 27, 37, 0.55) !important;
+    backdrop-filter: blur(var(--blur)) !important;
+}
+
+/* Play button — enhanced with softer glow */
+.mainDetailButtons .btnPlay:hover {
+    filter: brightness(115%) !important;
+    box-shadow: 0 0 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.4) !important;
+}
+
+/* Tagline border — accent color */
+h3.tagline {
+    border-left-color: var(--primary-accent-color) !important;
+    color: #9aa5b4 !important;
+}
+
+
+/* ===================================================================
+   8. IMPROVED FORM ELEMENTS & INPUTS
+   =================================================================== */
+
+/* Input fields — slightly more visible borders */
+.emby-input,
+.emby-textarea,
+.emby-select-withcolor {
+    border: 1px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+    background: #171d2a !important;
+    color: #c8d1dc !important;
+}
+
+/* Input focus state — accent border */
+.emby-input:focus,
+.emby-textarea:focus,
+.emby-select-withcolor:focus {
+    border-color: var(--primary-accent-color) !important;
+    box-shadow: 0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+}
+
+/* Paper lists — match dark surfaces */
+.paperList {
+    background: #171d2a !important;
+}
+
+/* Raised buttons — softer shadow */
+.fab,
+.raised {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+.fab:hover,
+.raised:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 16px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.2) !important;
+}
+
+/* Select dropdowns */
+.emby-select option {
+    background-color: #1c2330 !important;
+    color: #c8d1dc !important;
+}
+
+
+/* ===================================================================
+   9. IMPROVED PLAYER OSD
+   =================================================================== */
+
+/* Skip button — softer accent glow */
+.skip-button:hover,
+#skipIntro .btnSkipIntro:hover {
+    box-shadow: 0 0 20px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
+}
+
+/* Progress bar — accent color (inherited), improved track */
+.mdl-slider-background-flex {
+    background: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Up Next dialog — darker, cleaner */
+.upNextContainer:not(#skipIntro) {
+    background-color: rgba(14, 18, 25, 0.75) !important;
+    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+}
+
+/* Toast notifications — match theme */
+.toastVisible {
+    background-color: rgba(14, 18, 25, 0.88) !important;
+    backdrop-filter: blur(25px) !important;
+    border: 1px solid rgba(118, 180, 196, 0.12) !important;
+    color: #c8d1dc !important;
+}
+
+
+/* ===================================================================
+   10. IMPROVED DIALOG & POPUP STYLING
+   =================================================================== */
+
+/* Dialogs — match dark surface with subtle border */
+.dialog {
+    background-color: #151b25 !important;
+    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+}
+
+/* Dialog header/footer — darker accent */
+.formDialogHeader,
+.formDialogFooter {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+}
+
+/* Dialog content */
+.formDialogContent {
+    background: rgba(21, 27, 37, 0.9) !important;
+}
+
+/* Action sheet items hover */
+.actionSheetMenuItem.emby-button:hover,
+.listItem:hover {
+    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
+}
+
+/* MUI Popover/Menu — match dark theme */
+.MuiMenu-paper,
+.MuiPaper-root.MuiPopover-paper {
+    background: rgba(21, 27, 37, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    border: 1px solid rgba(118, 180, 196, 0.08) !important;
+}
+
+
+/* ===================================================================
+   11. DASHBOARD IMPROVEMENTS
+   =================================================================== */
+
+/* Dashboard update banner — softer accent */
+.dashboardActionsContainer::before {
+    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
+    color: #b0bcc8 !important;
+    border: 1px solid rgba(118, 180, 196, 0.1) !important;
+}
+
+/* Dashboard section headings */
+.dashboardSection h3 {
+    color: var(--primary-accent-color) !important;
+}
+
+/* Fieldsets in dashboard */
+fieldset.verticalSection-extrabottompadding {
+    border-color: rgba(118, 180, 196, 0.1) !important;
+}
+
+/* Task progress bar */
+.taskProgressInner {
+    background: var(--primary-accent-color) !important;
+}
+
+/* Alert messages */
+.MuiAlert-message {
+    color: #d8e0e8 !important;
+}
+
+/* Info banners */
+.infoBanner {
+    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
+    border: 1px solid rgba(118, 180, 196, 0.15) !important;
+    color: #b0bcc8 !important;
+}
+
+
+/* ===================================================================
+   12. SCROLLBAR STYLING (subtle, matches theme)
+   =================================================================== */
+
+/* Show subtle scrollbars on hover for usability */
+*:hover {
+    scrollbar-color: rgba(118, 180, 196, 0.2) transparent !important;
+}
+
+*::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(118, 180, 196, 0.18) !important;
+    border-radius: 10px !important;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background: rgba(118, 180, 196, 0.35) !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+
+/* ===================================================================
+   13. MUSIC / NOW PLAYING BAR
+   =================================================================== */
+
+/* App footer — match theme background */
+.appfooter {
+    background: #0e1219 !important;
+    border-top: 1px solid rgba(118, 180, 196, 0.06) !important;
+    border-radius: 16px 16px 0 0 !important;
+}
+
+/* Volume OSD */
+.volumeOsd {
+    background: rgba(21, 27, 37, 0.9) !important;
+    border: 1px solid rgba(118, 180, 196, 0.08) !important;
+}
+
+
+/* ===================================================================
+   14. BACKDROP & LIBRARY PAGE REFINEMENTS
+   =================================================================== */
+
+/* Library page backdrop — softer blur and darken */
+.libraryDocument.withSectionTabs .backgroundContainer {
+    backdrop-filter: blur(20px) brightness(0.28) !important;
+    background-color: rgba(14, 18, 25, 0.6) !important;
+}
+
+/* Mobile backdrop — slightly more visible */
+.layout-mobile .backdropImage {
+    opacity: 0.25 !important;
+}
+
+/* Backdrop sidebar blending */
+.layout-desktop:has(.backgroundContainer.withBackdrop) .navMenuOption-selected,
+.layout-mobile:has(.backgroundContainer.withBackdrop) .navMenuOption-selected {
+    background: rgba(14, 18, 25, 0.55) !important;
+    backdrop-filter: blur(var(--blur)) !important;
+}
+
+
+/* ===================================================================
+   15. TV GUIDE IMPROVEMENTS
+   =================================================================== */
+
+/* Guide date tabs — match dark header */
+.emby-tabs-slider.guideDateTabsSlider {
+    background: var(--header-background-color) !important;
+    color: var(--header-text-color) !important;
+}
+
+/* Active guide date tab */
+button.emby-tab-button.guide-date-tab-button.emby-tab-button-active.emby-button {
+    background: var(--primary-accent-color) !important;
+    color: var(--text-color) !important;
+    box-shadow: 0 2px 12px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.25) !important;
+}
+
+
+/* ===================================================================
+   16. MISC REFINEMENTS
+   =================================================================== */
+
+/* Alpha picker — match theme */
+.alphaPickerButton {
+    color: #5a6575 !important;
+}
+.alphaPickerButton:hover {
+    color: #c8d1dc !important;
+}
+.alphaPickerButton-selected {
+    color: var(--primary-accent-color) !important;
+}
+
+/* Username on profile page */
+.username {
+    color: var(--primary-accent-color) !important;
+}
+
+/* Remove harsh borders */
+.listItem-border {
+    border: 0 !important;
+}
+
+/* Submit/cancel button improvements */
+.button-submit {
+    background: var(--primary-accent-color) !important;
+    color: var(--text-color) !important;
+}
+
+#btnCancel,
+#btnResetPassword,
+.button-cancel {
+    background: rgba(180, 85, 85, 0.7) !important;
+}
+
+/* Checkboxes — accent color */
+.emby-checkbox:checked + span + .checkboxOutline {
+    background: var(--primary-accent-color) !important;
+    border-color: var(--primary-accent-color) !important;
+}
+
+/* Star rating spin — slower, smoother */
+.starRatingContainer:hover .starIcon {
+    animation: spin 1.5s ease-in-out !important;
+}
+
+/* Separator icons */
+.separator-icon {
+    color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.6) !important;
+}
+
+/* Login page background — if using default */
+.layout-desktop .backgroundContainer:not(.withBackdrop):not(.backgroundContainer-transparent) {
+    background-color: #0e1219 !important;
+}
+
+
+/* ===================================================================
+   END OF THEME IMPROVEMENTS
+   
+   Color Palette Summary — "Calm Seas":
+   ┌──────────────────────────────────────┐
+   │  Accent:     #76B4C4  (Soft Teal)   │
+   │  Primary BG: #0E1219  (Deep Navy)   │
+   │  Surface:    #151B25  (Dark Navy)   │
+   │  Elevated:   #1C2330  (Navy Gray)   │
+   │  Input BG:   #1A2030  (Muted Navy)  │
+   │  Body Text:  #C8D1DC  (Soft Gray)   │
+   │  Bright Text:#E4EAF1  (Off-White)   │
+   │  Muted Text: #7D8A9A  (Dim Gray)    │
+   │  Header BG:  rgba(14,18,25,0.78)    │
+   └──────────────────────────────────────┘
+   =================================================================== */
