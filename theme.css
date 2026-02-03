@@ -106,45 +106,15 @@
 
 
 /* ===================================================================
-   3. POSTER ALIGNMENT FIX ON DETAIL PAGES
-   
-   The z-index overrides for sidebar fix were too aggressive — 
-   unsetting z-index on detailPageWrapperContainer and 
-   detailPagePrimaryContainer broke the poster positioning context.
-   Now only targeting the actual blocking layers.
-   =================================================================== */
-
-/* Reset the poster positioning to work correctly */
-.layout-desktop .detailImageContainer .card {
-    top: 9em !important;
-    width: 18.3vw !important;
-    position: relative !important;
-}
-
-/* Ensure the image container participates in layout properly */
-.detailImageContainer {
-    position: relative !important;
-    z-index: 2 !important;
-}
-
-/* Keep the detail page layout intact */
-.layout-desktop .detailPagePrimaryContainer {
-    position: relative !important;
-}
-
-.layout-desktop .detailPageWrapperContainer {
-    position: relative !important;
-}
-
-
-/* ===================================================================
-   4. SIDEBAR / LEFT MENU FIX
+   3. SIDEBAR / LEFT MENU FIX
    
    Problem: Sidebar doesn't work when viewing movie/show detail pages.
-   Root cause: Detail page backdrop and content create stacking contexts 
-   that capture pointer events above the sidebar's z-index.
-   Fix: Only target the actual blocking layers (backdrop, background),
-   not the layout containers.
+   Root cause: Detail page backdrop creates a stacking context that
+   captures pointer events above the sidebar's z-index.
+   
+   Fix: ONLY boost sidebar/header z-index. Do NOT touch any detail
+   page containers (detailPageWrapperContainer, detailImageContainer,
+   etc.) — that breaks poster positioning.
    =================================================================== */
 
 /* Ensure sidebar is ALWAYS above all page content */
@@ -160,23 +130,14 @@
     pointer-events: auto !important;
 }
 
-/* Only unset z-index on the actual blocking layers — NOT on layout containers */
-.itemBackdrop,
-.backgroundContainer {
+/* Only unset z-index on the backdrop image layer — nothing else */
+.itemBackdrop {
     z-index: unset !important;
 }
 
 /* Ensure the scrollable content area in the sidebar receives clicks */
 .mainDrawer-scrollContainer {
     pointer-events: auto !important;
-    position: relative !important;
-    z-index: 1 !important;
-}
-
-/* Ensure sidebar navigation items are always clickable */
-.navMenuOption {
-    pointer-events: auto !important;
-    cursor: pointer !important;
 }
 
 /* Keep header and hamburger button above backdrops */
