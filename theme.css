@@ -1,674 +1,787 @@
 /*
-================================================================================
-|                                                                              |
-|              JELLYFIN CUSTOM THEME — "Midnight Ember"                        |
-|              Based on Jellyfish by n00bcodr                                  |
-|              Modified: Vibrant palette, poster fix, logo removed             |
-|                                                                              |
-================================================================================
-|                                                                              |
-|  HOW TO USE:                                                                 |
-|  Option A: Paste entire file into Jellyfin → Dashboard → General → Custom   |
-|  Option B: Host on GitHub and use @import url(...)                           |
-|                                                                              |
-|  Changes from base Jellyfish:                                                |
-|  1. "Midnight Ember" warm amber/gold palette — vibrant, eye-catching         |
-|  2. Poster alignment fix on detail pages                                     |
-|  3. Jellyfish logo removed (clean header)                                    |
-|  4. Sidebar/left menu fix on detail pages                                    |
-|  5. Dark glass header with proper text colors                                |
-|  6. Various UI refinements                                                   |
-|                                                                              |
-================================================================================
-*/
+ * ═══════════════════════════════════════════════════════
+ *  NETFLIX-STYLE THEME FOR JELLYFIN
+ *  A comprehensive dark theme inspired by Netflix's UI
+ * ═══════════════════════════════════════════════════════
+ */
 
-/* ~~~~~~~~~~~~~~~~~~~~ BASE THEME IMPORT ~~~~~~~~~~~~~~~~~~~~ */
-@import url('https://cdn.jsdelivr.net/gh/n00bcodr/jellyfish@main/theme.css');
-
-
-/* ===================================================================
-   1. COLOR PALETTE — "Midnight Ember"
-   
-   Warm amber/gold on deep dark backgrounds — high contrast,
-   premium feel, extremely visible accents that "pop" without
-   causing eye strain. Warm tones are more comfortable than 
-   cool blues for extended viewing sessions.
-   =================================================================== */
-
+/* ─── CSS VARIABLES ─── */
 :root {
-    /* --- Accent Color (Warm Amber/Gold) --- */
-    --primary-r: 232;
-    --primary-g: 168;
-    --primary-b: 75;
-    /* Result: #E8A84B — warm gold, rich and vibrant */
-    --primary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 1.0);
-    --secondary-accent-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5);
-
-    /* --- Background Colors (Deep Dark — NOT pure black) --- */
-    --primary-background-color: #0c0f14;       /* Main background: very deep blue-black */
-    --secondary-background-color: #13171f;     /* Drawer, cards, dialogs */
-    --tertiary-background-color: #1a1f2a;      /* Popovers, elevated surfaces */
-
-    /* --- Transparent Backgrounds --- */
-    --primary-background-transparent: rgba(12, 15, 20, 0.65);
-    --secondary-background-transparent: rgba(19, 23, 31, 0.72);
-
-    /* --- Surface & Input Colors --- */
-    --alt-accent-color: #171c26;               /* Card/input backgrounds */
-
-    /* --- Text Colors --- */
-    --text-color: #f0ece5;                     /* Text ON accent backgrounds (buttons, badges) */
-    --header-text-color: #d1cdc6;              /* Header navigation text */
-
-    /* --- Header (Dark frosted glass) --- */
-    --header-background-color: rgba(12, 15, 20, 0.82);
-
-    /* --- Remove Jellyfish Logo --- */
-    --logo: none;
-
-    /* --- No background image --- */
-    --background-image: none;
-
-    /* --- Alternate Accents (for active device cards) --- */
-    --primary-alt1: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 1);
-    --primary-alt2: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.82);
-    --primary-alt3: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.65);
-    --primary-alt4: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.50);
-    --primary-alt5: rgba(calc(var(--primary-r) - 20), calc(var(--primary-g) - 20), calc(var(--primary-b) - 20), 0.35);
+    --netflix-red: #E50914;
+    --netflix-red-hover: #F40612;
+    --netflix-red-dark: #B20710;
+    --netflix-bg: #141414;
+    --netflix-bg-light: #181818;
+    --netflix-bg-card: #1a1a1a;
+    --netflix-bg-elevated: #232323;
+    --netflix-bg-input: #333333;
+    --netflix-text: #FFFFFF;
+    --netflix-text-muted: #B3B3B3;
+    --netflix-text-dim: #808080;
+    --netflix-border: rgba(255, 255, 255, 0.1);
+    --netflix-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+    --netflix-radius: 4px;
+    --netflix-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-
-/* ===================================================================
-   2. REMOVE JELLYFISH LOGO FROM HEADER
-   =================================================================== */
-
-/* Hide the Jellyfish logo entirely */
-.pageTitleWithDefaultLogo {
-    background-image: none !important;
-    display: none !important;
+/* ─── GLOBAL FOUNDATION ─── */
+html {
+    background-color: var(--netflix-bg) !important;
+    color: var(--netflix-text) !important;
+    scrollbar-color: #444 transparent;
 }
 
-/* Also hide any logo image element */
-.pageTitleWithLogo {
-    background-image: none !important;
-    width: 0 !important;
-    height: 0 !important;
-    margin: 0 !important;
-    padding: 0 !important;
+body, .mainAnimatedPages {
+    background-color: var(--netflix-bg) !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ─── TYPOGRAPHY ─── */
+.emby-tab-button,
+.headerTabs,
+body,
+h1, h2, h3, h4 {
+    font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
+}
+
+h1, h2, h3, .sectionTitle {
+    font-weight: 700 !important;
+    letter-spacing: -0.2px;
+}
+
+/* ─── TOP NAVIGATION BAR ─── */
+.skinHeader,
+.headroom,
+.headroom--not-bottom,
+.headroom--pinned,
+.headroom--not-top {
+    background: var(--netflix-bg) !important;
+    box-shadow: 0 1px 0 var(--netflix-border) !important;
+    backdrop-filter: none !important;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.skinHeader.headroom--unpinned {
+    background: var(--netflix-bg) !important;
+    display: flex !important;
+    visibility: visible !important;
+}
+
+.skinHeader.headroom--pinned.headroom--not-top {
+    background: var(--netflix-bg) !important;
+}
+
+/* Ensure header is always visible */
+.skinHeader * {
+    visibility: visible !important;
+}
+
+.headerTabs .emby-tab-button {
+    color: var(--netflix-text-muted) !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    text-transform: none !important;
+    transition: var(--netflix-transition);
+    border-bottom: none !important;
+}
+
+.headerTabs .emby-tab-button:hover {
+    color: var(--netflix-text) !important;
+}
+
+.headerTabs .emby-tab-button-foreground {
+    border-bottom: none !important;
+}
+
+.emby-tab-button.is-active {
+    color: var(--netflix-text) !important;
+    font-weight: 700 !important;
+}
+
+/* Remove tab underline indicator */
+.emby-tabs-slider {
+    background: var(--netflix-red) !important;
+    height: 3px !important;
+    border-radius: 2px;
+}
+
+/* Header user/settings icons */
+.headerButton {
+    color: var(--netflix-text) !important;
+    transition: var(--netflix-transition);
+}
+
+.headerButton:hover {
+    color: var(--netflix-red) !important;
+    transform: scale(1.1);
+}
+
+/* ─── SIDE NAVIGATION / DRAWER ─── */
+.mainDrawer,
+.navMenuOption,
+.mainDrawer-scrollContainer {
+    background: var(--netflix-bg) !important;
+}
+
+.navMenuOption {
+    color: var(--netflix-text-muted) !important;
+    border-radius: var(--netflix-radius);
+    margin: 2px 8px;
+    transition: var(--netflix-transition);
+}
+
+.navMenuOption:hover {
+    color: var(--netflix-text) !important;
+    background: var(--netflix-bg-elevated) !important;
+}
+
+.navMenuOption-selected {
+    color: var(--netflix-text) !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+}
+
+/* ─── MEDIA CARDS ─── */
+.cardBox {
+    border-radius: var(--netflix-radius) !important;
+    overflow: hidden;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    margin: 2px;
+}
+
+.cardBox:hover {
+    transform: scale(1.05) translateY(-4px) !important;
+    box-shadow: var(--netflix-shadow) !important;
+    z-index: 10 !important;
+    position: relative;
+}
+
+.cardScalable {
+    border-radius: var(--netflix-radius) !important;
     overflow: hidden !important;
 }
 
-/* Clean up admin drawer logo */
-.adminDrawerLogo img,
-.imgLogoIcon {
-    display: none !important;
+.cardImage {
+    border-radius: var(--netflix-radius) !important;
 }
 
-
-/* ===================================================================
-   3. SIDEBAR / LEFT MENU FIX
-   
-   Problem: Sidebar doesn't work when viewing movie/show detail pages.
-   Root cause: Detail page backdrop creates a stacking context that
-   captures pointer events above the sidebar's z-index.
-   
-   Fix: ONLY boost sidebar/header z-index. Do NOT touch any detail
-   page containers (detailPageWrapperContainer, detailImageContainer,
-   etc.) — that breaks poster positioning.
-   =================================================================== */
-
-/* Ensure sidebar is ALWAYS above all page content */
-.mainDrawer {
-    z-index: 1200 !important;
-    pointer-events: auto !important;
+.cardOverlayContainer {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.3) 40%, transparent 100%) !important;
+    border-radius: var(--netflix-radius) !important;
+    opacity: 0;
+    transition: opacity 0.3s ease !important;
 }
 
-/* Sidebar overlay/mask must sit just below the drawer */
-.mainDrawer-mask,
-.mainDrawer-backdrop {
-    z-index: 1199 !important;
-    pointer-events: auto !important;
+.cardBox:hover .cardOverlayContainer {
+    opacity: 1;
 }
 
-/* Only unset z-index on the backdrop image layer — nothing else */
-.itemBackdrop {
-    z-index: unset !important;
-}
-
-/* Ensure the scrollable content area in the sidebar receives clicks */
-.mainDrawer-scrollContainer {
-    pointer-events: auto !important;
-}
-
-/* Keep header and hamburger button above backdrops */
-.skinHeader {
-    z-index: 1100 !important;
-}
-
-.mainDrawerButton {
-    z-index: 1101 !important;
-    pointer-events: auto !important;
-}
-
-
-/* ===================================================================
-   5. HEADER TEXT COLOR FIX
-   
-   Dark glass header needs light text/icons instead of dark.
-   =================================================================== */
-
-/* Fix header tab and right-section text for dark header background */
-.headerTabs,
-.headerRight {
-    color: var(--header-text-color) !important;
-}
-
-/* Fix header button/tab text */
-.homeLibraryText,
-.emby-button-foreground {
-    color: var(--header-text-color) !important;
-}
-
-/* Active tab — bright warm white for clarity */
-.emby-tab-button-active > .emby-button-foreground {
-    color: var(--text-color) !important;
-}
-
-/* Header right section icons — light for dark header */
-.headerRight .paper-icon-button-light {
-    color: var(--header-text-color) !important;
-}
-
-/* Mobile header adjustments */
-.layout-mobile .headroom--top .headerRight {
-    background: var(--header-background-color) !important;
-    color: var(--header-text-color) !important;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-}
-
-/* Header icons on hover — amber accent */
-.headerRight .paper-icon-button-light:hover,
-.headerRight .paper-icon-button-light:hover:not(:disabled),
-.headerRight .paper-icon-button-light:focus,
-.headerRight .paper-icon-button-light:focus:not(:disabled) {
-    color: var(--primary-accent-color) !important;
-}
-
-/* Tab hover text should be warm white (on accent bg) */
-.raised:hover .homeLibraryText,
-.emby-tab-button:hover .emby-button-foreground {
-    color: var(--text-color) !important;
-}
-
-/* Header shadow — subtle warm glow */
-.headerTabs,
-.headerRight {
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.45) !important;
-}
-
-/* Mobile header text shadow */
-.layout-mobile .emby-button-foreground {
-    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7) !important;
-}
-
-
-/* ===================================================================
-   6. TEXT READABILITY — WARM NEUTRALS
-   =================================================================== */
-
-/* Body text — warm off-white, comfortable for long sessions */
-body,
-.layout-desktop,
-.layout-mobile,
-.layout-tv {
-    color: #d1cdc6 !important;
-}
-
-/* Section titles — warm amber accent */
-.sectionTitle,
-.headerUsername {
-    color: var(--primary-accent-color) !important;
-    text-shadow: 0 1px 12px rgba(232, 168, 75, 0.2) !important;
-}
-
-/* Card text — warm gray, readable */
+/* Card footer text */
+.cardFooter,
 .cardText {
-    color: #c4bfb6 !important;
+    background: transparent !important;
+    color: var(--netflix-text-muted) !important;
+    padding: 4px 2px !important;
 }
 
-/* Secondary/muted text — softer warm gray */
-.cardText-secondary,
-.secondaryText {
-    color: #8a857c !important;
+.cardFooter .cardText:first-child {
+    color: var(--netflix-text) !important;
+    font-weight: 600 !important;
 }
 
-/* Selected MUI items — white text on accent */
-.MuiListItemButton-root.Mui-selected .MuiListItemIcon-root,
-.MuiListItemButton-root.Mui-selected {
-    color: #ffffff !important;
+/* Card indicator (unwatched count, progress) */
+.countIndicator,
+.indicator {
+    background: var(--netflix-red) !important;
+    border-radius: 2px !important;
+    font-weight: 700 !important;
 }
 
-
-/* ===================================================================
-   7. SIDEBAR STYLING — WARM TONES
-   =================================================================== */
-
-/* Sidebar background — deep dark, glass effect */
-.layout-desktop .mainDrawer:not(.dashboardDocument),
-.layout-mobile .mainDrawer {
-    background: rgba(10, 12, 18, 0.94) !important;
-    backdrop-filter: blur(40px) saturate(1.2) !important;
-    border-right: 1px solid rgba(232, 168, 75, 0.06) !important;
+/* Progress bar on cards */
+.itemProgressBar {
+    height: 3px !important;
+    border-radius: 0 !important;
 }
 
-/* Sidebar nav items */
-.navMenuOption {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+.itemProgressBarForeground {
+    background: var(--netflix-red) !important;
 }
 
-/* Selected sidebar item — amber highlight */
-.navMenuOption-selected {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
-    color: var(--primary-accent-color) !important;
-    border-left: 3px solid var(--primary-accent-color) !important;
+/* ─── SECTION TITLES ─── */
+.sectionTitle,
+.sectionTitle-sectionTitle {
+    color: var(--netflix-text) !important;
+    font-size: 1.3em !important;
+    font-weight: 700 !important;
 }
 
-/* Hover on non-selected sidebar items */
-.navMenuOption:hover:not(.navMenuOption-selected) {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
-    color: var(--primary-accent-color) !important;
-    transform: translateX(4px) !important;
-    border-left: 3px solid transparent !important;
+.sectionTitle:hover {
+    color: var(--netflix-text-muted) !important;
 }
 
-/* MUI sidebar hover */
-.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:hover:not(.Mui-selected) {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.07) !important;
-    translate: 0 -2px !important;
+/* Section "See More" buttons */
+.sectionTitleTextButton {
+    color: var(--netflix-text-dim) !important;
+    transition: var(--netflix-transition);
 }
 
-/* MUI sidebar default text — warm gray */
-.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) .MuiListItemIcon-root,
-.MuiList-subheader .MuiListItemButton-root.MuiListItemButton-gutters:not(.Mui-selected) {
-    color: #928d85 !important;
+.sectionTitleTextButton:hover {
+    color: var(--netflix-red) !important;
 }
 
-
-/* ===================================================================
-   8. CARD & LIST ITEM STYLING — WARM ACCENTS
-   =================================================================== */
-
-/* Card hover — warm amber glow */
-div.card-withuserdata.card-hoverable.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
-div.groupedCard.card-hoverable.overflowSquareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable,
-div.card-hoverable.squareCard.card:hover > .cardBox-bottompadded.cardBox > .cardScalable {
-    border: 2px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
-    box-shadow: 0 4px 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.15) !important;
+/* ─── DETAIL / ITEM PAGE ─── */
+.detailPageWrapperContainer {
+    background: var(--netflix-bg) !important;
 }
 
-/* List item hover — warm subtle lift */
-.listItem:hover {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.05) !important;
-    translate: 0 -2px !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25) !important;
+.detailImageContainer {
+    border-radius: var(--netflix-radius) !important;
+    box-shadow: var(--netflix-shadow) !important;
 }
 
-/* Watched indicator — keep green */
-.playedIndicator {
-    background: #3da83d !important;
-    color: white !important;
+/* Detail page backdrop gradient */
+.backdropImage {
+    filter: brightness(0.4) !important;
 }
 
-/* Card overlay on hover */
-.card-hoverable:hover .cardOverlayContainer {
-    background: rgba(12, 15, 20, 0.55) !important;
+.detailPagePrimaryContainer {
+    background: linear-gradient(0deg, var(--netflix-bg) 0%, rgba(20, 20, 20, 0.8) 50%, transparent 100%) !important;
 }
 
-
-/* ===================================================================
-   9. DETAIL PAGE IMPROVEMENTS
-   =================================================================== */
-
-/* Detail section content — subtle warm tint */
-.detailSectionContent {
-    background: rgba(19, 23, 31, 0.65) !important;
-    backdrop-filter: blur(var(--blur)) !important;
+/* Detail page title */
+.itemName,
+.parentName {
+    color: var(--netflix-text) !important;
+    font-weight: 700 !important;
 }
 
-/* Track selections */
-.trackSelections {
-    background: rgba(19, 23, 31, 0.65) !important;
-    backdrop-filter: blur(var(--blur)) !important;
+/* Detail page metadata */
+.itemMiscInfo,
+.itemMiscInfo-primary,
+.itemExternalLinks {
+    color: var(--netflix-text-muted) !important;
 }
 
-/* Details group */
-.itemDetailsGroup:has(.detailsGroupItem:not(.hide)) {
-    background: rgba(19, 23, 31, 0.55) !important;
-    backdrop-filter: blur(var(--blur)) !important;
+/* Genres and tags */
+.itemGenres .button-flat,
+.detailPageContent .itemTag {
+    color: var(--netflix-text-muted) !important;
+    transition: var(--netflix-transition);
 }
 
-/* Play button — warm amber glow on hover */
-.mainDetailButtons .btnPlay:hover {
-    filter: brightness(115%) !important;
-    box-shadow: 0 0 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.45) !important;
+.itemGenres .button-flat:hover,
+.detailPageContent .itemTag:hover {
+    color: var(--netflix-red) !important;
 }
 
-/* Tagline border — amber accent */
-h3.tagline {
-    border-left-color: var(--primary-accent-color) !important;
-    color: #a39e95 !important;
+/* Overview text */
+.overview-text,
+.itemOverview {
+    color: var(--netflix-text-muted) !important;
+    line-height: 1.6 !important;
+    font-size: 1em !important;
 }
 
+/* Detail page match score / rating */
+.mediaInfoItem {
+    color: var(--netflix-text-dim) !important;
+    border: 1px solid var(--netflix-border) !important;
+    border-radius: var(--netflix-radius) !important;
+    padding: 1px 6px !important;
+}
 
-/* ===================================================================
-   10. FORM ELEMENTS & INPUTS
-   =================================================================== */
+/* ─── BUTTONS ─── */
+.emby-button,
+.button-submit,
+.raised {
+    transition: var(--netflix-transition) !important;
+    border-radius: var(--netflix-radius) !important;
+    text-transform: none !important;
+    font-weight: 600 !important;
+}
 
-/* Input fields — warm subtle borders */
+/* Primary action buttons (Play, etc.) */
+.button-submit,
+.emby-button.button-submit {
+    background: var(--netflix-red) !important;
+    color: var(--netflix-text) !important;
+    border: none !important;
+    padding: 10px 24px !important;
+    font-size: 1em !important;
+    letter-spacing: 0.3px;
+}
+
+.button-submit:hover,
+.emby-button.button-submit:hover {
+    background: var(--netflix-red-hover) !important;
+    transform: scale(1.02);
+}
+
+.button-submit:focus {
+    background: var(--netflix-red-dark) !important;
+}
+
+/* Play button on detail page */
+.detailButton-primary,
+.btnPlay {
+    background: var(--netflix-text) !important;
+    color: #000000 !important;
+    border-radius: var(--netflix-radius) !important;
+    font-weight: 700 !important;
+    padding: 8px 28px !important;
+    transition: var(--netflix-transition) !important;
+}
+
+.detailButton-primary:hover,
+.btnPlay:hover {
+    background: rgba(255, 255, 255, 0.8) !important;
+    transform: scale(1.02);
+}
+
+/* Secondary buttons */
+.detailButton,
+.btnResume,
+.emby-button.raised:not(.button-submit) {
+    background: rgba(109, 109, 110, 0.7) !important;
+    color: var(--netflix-text) !important;
+    border: none !important;
+    border-radius: var(--netflix-radius) !important;
+    transition: var(--netflix-transition) !important;
+}
+
+.detailButton:hover,
+.btnResume:hover,
+.emby-button.raised:not(.button-submit):hover {
+    background: rgba(109, 109, 110, 0.4) !important;
+}
+
+/* Icon buttons */
+.paper-icon-button-light {
+    color: var(--netflix-text) !important;
+    transition: var(--netflix-transition);
+}
+
+.paper-icon-button-light:hover {
+    color: var(--netflix-red) !important;
+    transform: scale(1.15);
+}
+
+/* ─── FORMS & INPUTS ─── */
 .emby-input,
 .emby-textarea,
-.emby-select-withcolor {
-    border: 1px solid rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
-    background: #151a24 !important;
-    color: #d1cdc6 !important;
+.emby-select {
+    background: var(--netflix-bg-input) !important;
+    color: var(--netflix-text) !important;
+    border: 1px solid transparent !important;
+    border-radius: var(--netflix-radius) !important;
+    padding: 12px 16px !important;
+    transition: var(--netflix-transition);
 }
 
-/* Input focus state — amber glow */
 .emby-input:focus,
 .emby-textarea:focus,
-.emby-select-withcolor:focus {
-    border-color: var(--primary-accent-color) !important;
-    box-shadow: 0 0 0 2px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
+.emby-select:focus {
+    border-color: var(--netflix-text) !important;
+    background: var(--netflix-bg-elevated) !important;
+    outline: none !important;
 }
 
-/* Paper lists */
-.paperList {
-    background: #151a24 !important;
+.inputLabel,
+.fieldDescription {
+    color: var(--netflix-text-muted) !important;
 }
 
-/* Raised buttons — warm shadow */
-.fab,
-.raised {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+/* Checkboxes and toggles */
+.emby-checkbox:checked + span + .checkboxOutline {
+    border-color: var(--netflix-red) !important;
+    background: var(--netflix-red) !important;
 }
 
-.fab:hover,
-.raised:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 4px 16px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.18) !important;
+.checkboxLabel {
+    color: var(--netflix-text-muted) !important;
 }
 
-/* Select dropdowns */
-.emby-select option {
-    background-color: #1a1f2a !important;
-    color: #d1cdc6 !important;
+/* ─── DIALOGS & MODALS ─── */
+.dialog,
+.formDialogContent,
+.dialogContainer .formDialogContent,
+.formDialogHeader {
+    background: var(--netflix-bg-light) !important;
+    color: var(--netflix-text) !important;
+    border-radius: 8px !important;
 }
 
-
-/* ===================================================================
-   11. PLAYER OSD
-   =================================================================== */
-
-/* Skip button — amber glow on hover */
-.skip-button:hover,
-#skipIntro .btnSkipIntro:hover {
-    box-shadow: 0 0 24px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
+.formDialogHeader {
+    border-bottom: 1px solid var(--netflix-border) !important;
+    border-radius: 8px 8px 0 0 !important;
 }
 
-/* Progress bar track */
-.mdl-slider-background-flex {
-    background: rgba(255, 255, 255, 0.1) !important;
+.formDialogHeaderTitle {
+    color: var(--netflix-text) !important;
+    font-weight: 700 !important;
 }
 
-/* Up Next dialog */
-.upNextContainer:not(#skipIntro) {
-    background-color: rgba(12, 15, 20, 0.8) !important;
-    border: 1px solid rgba(232, 168, 75, 0.08) !important;
-}
-
-/* Toast notifications */
-.toastVisible {
-    background-color: rgba(12, 15, 20, 0.9) !important;
-    backdrop-filter: blur(25px) !important;
-    border: 1px solid rgba(232, 168, 75, 0.1) !important;
-    color: #d1cdc6 !important;
-}
-
-
-/* ===================================================================
-   12. DIALOG & POPUP STYLING
-   =================================================================== */
-
-/* Dialogs */
-.dialog {
-    background-color: #13171f !important;
-    border: 1px solid rgba(232, 168, 75, 0.08) !important;
-}
-
-/* Dialog header/footer — amber tint */
-.formDialogHeader,
 .formDialogFooter {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.12) !important;
+    border-top: 1px solid var(--netflix-border) !important;
 }
 
-/* Dialog content */
-.formDialogContent {
-    background: rgba(19, 23, 31, 0.92) !important;
+/* ─── LISTS & TABLES ─── */
+.listItem,
+.listItemBody {
+    background: transparent !important;
+    color: var(--netflix-text) !important;
+    border-bottom: 1px solid var(--netflix-border) !important;
 }
 
-/* Action sheet items hover */
-.actionSheetMenuItem.emby-button:hover {
-    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
+.listItem:hover {
+    background: var(--netflix-bg-elevated) !important;
 }
 
-/* MUI Popover/Menu */
-.MuiMenu-paper,
-.MuiPaper-root.MuiPopover-paper {
-    background: rgba(19, 23, 31, 0.95) !important;
-    backdrop-filter: blur(20px) !important;
-    border: 1px solid rgba(232, 168, 75, 0.06) !important;
+.listItemBodyText {
+    color: var(--netflix-text-muted) !important;
 }
 
-
-/* ===================================================================
-   13. DASHBOARD IMPROVEMENTS
-   =================================================================== */
-
-/* Dashboard update banner — warm accent */
-.dashboardActionsContainer::before {
-    background-color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.1) !important;
-    color: #b5b0a8 !important;
-    border: 1px solid rgba(232, 168, 75, 0.08) !important;
+.secondaryText {
+    color: var(--netflix-text-dim) !important;
 }
 
-/* Dashboard section headings — amber */
-.dashboardSection h3 {
-    color: var(--primary-accent-color) !important;
+/* ─── LIBRARY / HOME PAGE ─── */
+.homePage,
+.libraryPage {
+    background: var(--netflix-bg) !important;
 }
 
-/* Fieldsets in dashboard */
-fieldset.verticalSection-extrabottompadding {
-    border-color: rgba(232, 168, 75, 0.08) !important;
+/* Featured content / banner area */
+.homePageSection {
+    margin-bottom: 1.5em !important;
 }
 
-/* Task progress bar */
-.taskProgressInner {
-    background: var(--primary-accent-color) !important;
-}
-
-/* Alert messages */
-.MuiAlert-message {
-    color: #ddd8d0 !important;
-}
-
-/* Info banners */
-.infoBanner {
-    background: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.08) !important;
-    border: 1px solid rgba(232, 168, 75, 0.12) !important;
-    color: #b5b0a8 !important;
-}
-
-
-/* ===================================================================
-   14. SCROLLBAR STYLING
-   =================================================================== */
-
-/* Subtle amber scrollbars on hover */
-*:hover {
-    scrollbar-color: rgba(232, 168, 75, 0.15) transparent !important;
-}
-
-*::-webkit-scrollbar {
-    width: 6px !important;
-    height: 6px !important;
-}
-
-*::-webkit-scrollbar-thumb {
-    background: rgba(232, 168, 75, 0.14) !important;
-    border-radius: 10px !important;
-}
-
-*::-webkit-scrollbar-thumb:hover {
-    background: rgba(232, 168, 75, 0.3) !important;
-}
-
-*::-webkit-scrollbar-track {
+/* ─── EPISODES LIST ─── */
+.detailSection,
+.verticalSection {
     background: transparent !important;
 }
 
-
-/* ===================================================================
-   15. MUSIC / NOW PLAYING BAR
-   =================================================================== */
-
-/* App footer */
-.appfooter {
-    background: #0c0f14 !important;
-    border-top: 1px solid rgba(232, 168, 75, 0.05) !important;
-    border-radius: 16px 16px 0 0 !important;
-}
-
-/* Volume OSD */
-.volumeOsd {
-    background: rgba(19, 23, 31, 0.92) !important;
-    border: 1px solid rgba(232, 168, 75, 0.06) !important;
-}
-
-
-/* ===================================================================
-   16. BACKDROP & LIBRARY PAGE REFINEMENTS
-   =================================================================== */
-
-/* Library page backdrop */
-.libraryDocument.withSectionTabs .backgroundContainer {
-    backdrop-filter: blur(20px) brightness(0.25) !important;
-    background-color: rgba(12, 15, 20, 0.6) !important;
-}
-
-/* Mobile backdrop */
-.layout-mobile .backdropImage {
-    opacity: 0.25 !important;
-}
-
-/* Backdrop sidebar blending */
-.layout-desktop:has(.backgroundContainer.withBackdrop) .navMenuOption-selected,
-.layout-mobile:has(.backgroundContainer.withBackdrop) .navMenuOption-selected {
-    background: rgba(12, 15, 20, 0.55) !important;
-    backdrop-filter: blur(var(--blur)) !important;
-}
-
-
-/* ===================================================================
-   17. TV GUIDE IMPROVEMENTS
-   =================================================================== */
-
-/* Guide date tabs — match dark header */
-.emby-tabs-slider.guideDateTabsSlider {
-    background: var(--header-background-color) !important;
-    color: var(--header-text-color) !important;
-}
-
-/* Active guide date tab — amber */
-button.emby-tab-button.guide-date-tab-button.emby-tab-button-active.emby-button {
-    background: var(--primary-accent-color) !important;
-    color: var(--text-color) !important;
-    box-shadow: 0 2px 14px rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.3) !important;
-}
-
-
-/* ===================================================================
-   18. MISC REFINEMENTS
-   =================================================================== */
-
-/* Alpha picker */
-.alphaPickerButton {
-    color: #5a564f !important;
-}
-.alphaPickerButton:hover {
-    color: #d1cdc6 !important;
-}
-.alphaPickerButton-selected {
-    color: var(--primary-accent-color) !important;
-}
-
-/* Username on profile page */
-.username {
-    color: var(--primary-accent-color) !important;
-}
-
-/* Remove harsh borders */
 .listItem-border {
-    border: 0 !important;
+    border-color: var(--netflix-border) !important;
 }
 
-/* Submit button — amber */
-.button-submit {
-    background: var(--primary-accent-color) !important;
-    color: var(--text-color) !important;
+/* Episode cards */
+.episodeCard {
+    background: var(--netflix-bg-card) !important;
+    border-radius: var(--netflix-radius) !important;
+    transition: var(--netflix-transition);
 }
 
-/* Cancel buttons — muted red */
-#btnCancel,
-#btnResetPassword,
-.button-cancel {
-    background: rgba(180, 85, 85, 0.7) !important;
+.episodeCard:hover {
+    background: var(--netflix-bg-elevated) !important;
 }
 
-/* Checkboxes — amber */
-.emby-checkbox:checked + span + .checkboxOutline {
-    background: var(--primary-accent-color) !important;
-    border-color: var(--primary-accent-color) !important;
+/* ─── VIDEO PLAYER ─── */
+.videoOsdBottom {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%) !important;
 }
 
-/* Star rating spin */
-.starRatingContainer:hover .starIcon {
-    animation: spin 1.5s ease-in-out !important;
+.videoOsdTop {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%) !important;
 }
 
-/* Separator icons — warm */
-.separator-icon {
-    color: rgba(var(--primary-r), var(--primary-g), var(--primary-b), 0.5) !important;
+/* Player progress bar */
+.mdl-slider::-webkit-slider-thumb,
+.osdTimeSlider .sliderBubble {
+    background: var(--netflix-red) !important;
 }
 
-/* Login page background */
-.layout-desktop .backgroundContainer:not(.withBackdrop):not(.backgroundContainer-transparent) {
-    background-color: #0c0f14 !important;
+.mdl-slider {
+    accent-color: var(--netflix-red) !important;
 }
 
+.sliderBubble-progress {
+    background: var(--netflix-red) !important;
+}
 
-/* ===================================================================
-   END OF THEME
-   
-   Color Palette Summary — "Midnight Ember":
-   ┌──────────────────────────────────────┐
-   │  Accent:     #E8A84B  (Warm Gold)   │
-   │  Primary BG: #0C0F14  (Deep Dark)   │
-   │  Surface:    #13171F  (Dark Navy)   │
-   │  Elevated:   #1A1F2A  (Navy Gray)   │
-   │  Input BG:   #171C26  (Muted Dark)  │
-   │  Body Text:  #D1CDC6  (Warm Gray)   │
-   │  Bright Text:#F0ECE5  (Warm White)  │
-   │  Muted Text: #8A857C  (Dim Warm)    │
-   │  Header BG:  rgba(12,15,20,0.82)    │
-   └──────────────────────────────────────┘
-   =================================================================== */
+/* Player buttons */
+.osdControls .paper-icon-button-light {
+    color: var(--netflix-text) !important;
+}
+
+.osdControls .paper-icon-button-light:hover {
+    color: var(--netflix-text) !important;
+    transform: scale(1.2);
+}
+
+/* Volume slider */
+.volumeSlider {
+    accent-color: var(--netflix-red) !important;
+}
+
+/* ─── SKIP INTRO BUTTON (NETFLIX STYLE) ─── */
+.skipIntro {
+    position: fixed !important;
+    bottom: 12% !important;
+    right: 3% !important;
+    z-index: 9999 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    animation: skipFadeIn 0.3s ease forwards;
+}
+
+.skipIntro .emby-button {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: var(--netflix-text) !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 2px !important;
+    padding: 8px 28px !important;
+    font-size: 1.15em !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    transition: var(--netflix-transition) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+.skipIntro .emby-button:hover {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #000000 !important;
+    border-color: #ffffff !important;
+}
+
+@keyframes skipFadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* ─── SEARCH ─── */
+.searchFields {
+    background: transparent !important;
+}
+
+.searchfields-txtSearch {
+    background: var(--netflix-bg-input) !important;
+    color: var(--netflix-text) !important;
+    border: 1px solid var(--netflix-border) !important;
+    border-radius: var(--netflix-radius) !important;
+}
+
+/* ─── TOAST NOTIFICATIONS ─── */
+.toast {
+    background: var(--netflix-bg-elevated) !important;
+    color: var(--netflix-text) !important;
+    border-radius: var(--netflix-radius) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* ─── LOADING SPINNER ─── */
+.mdl-spinner__layer {
+    border-color: var(--netflix-red) !important;
+}
+
+.mdl-spinner__circle-clipper .mdl-spinner__circle {
+    border-color: var(--netflix-red) !important;
+}
+
+/* ─── LOGIN PAGE ─── */
+.loginPage {
+    background: var(--netflix-bg) !important;
+}
+
+.manualLoginForm .inputContainer {
+    background: var(--netflix-bg-input) !important;
+    border-radius: var(--netflix-radius) !important;
+}
+
+/* User select avatars */
+.cardContent-button {
+    border-radius: var(--netflix-radius) !important;
+    transition: var(--netflix-transition);
+}
+
+.cardContent-button:hover {
+    transform: scale(1.05);
+}
+
+/* ─── SETTINGS PAGES ─── */
+.adminDrawerLogo,
+.dashboardDocument .content-primary {
+    background: var(--netflix-bg) !important;
+}
+
+.paperList {
+    background: var(--netflix-bg-light) !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+}
+
+/* ─── GUIDES & LIVE TV ─── */
+.programCell {
+    background: var(--netflix-bg-card) !important;
+    border: 1px solid var(--netflix-border) !important;
+    transition: var(--netflix-transition);
+}
+
+.programCell:hover {
+    background: var(--netflix-bg-elevated) !important;
+}
+
+/* ─── MISC POLISH ─── */
+
+/* Remove default blue focus outlines */
+*:focus {
+    outline: none !important;
+}
+
+/* Selection color */
+::selection {
+    background: var(--netflix-red) !important;
+    color: var(--netflix-text) !important;
+}
+
+/* Dividers */
+.horizontalSection > hr,
+.verticalSection > hr {
+    border-color: var(--netflix-border) !important;
+}
+
+/* Alpha picks / letter navigation */
+.alphaPicker-letter {
+    color: var(--netflix-text-dim) !important;
+    transition: var(--netflix-transition);
+}
+
+.alphaPicker-letter:hover,
+.alphaPicker-letter-selected {
+    color: var(--netflix-red) !important;
+}
+
+/* Empty/placeholder areas */
+.noItemsMessage {
+    color: var(--netflix-text-dim) !important;
+}
+
+/* Action sheet / context menu */
+.actionSheet {
+    background: var(--netflix-bg-light) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7) !important;
+}
+
+.actionSheetMenuItem {
+    color: var(--netflix-text) !important;
+    transition: var(--netflix-transition);
+}
+
+.actionSheetMenuItem:hover {
+    background: var(--netflix-bg-elevated) !important;
+    color: var(--netflix-text) !important;
+}
+
+/* Subtitle settings overlay */
+.subtitleAppearance-preview {
+    background: rgba(0, 0, 0, 0.8) !important;
+    border-radius: var(--netflix-radius) !important;
+}
+
+/* Chips / filters */
+.emby-button.show-focus:focus {
+    background: var(--netflix-red) !important;
+    color: var(--netflix-text) !important;
+}
+
+/* Toggle switch Netflix red */
+.emby-toggle:checked {
+    background: var(--netflix-red) !important;
+}
+
+/* Pagination */
+.listPaging .emby-button {
+    color: var(--netflix-text-muted) !important;
+}
+
+.listPaging .emby-button:hover {
+    color: var(--netflix-text) !important;
+}
+
+/* Card hover info overlay */
+.cardOverlayButtonContainer {
+    background: transparent !important;
+}
+
+.cardOverlayButton {
+    background: rgba(0, 0, 0, 0.6) !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 50% !important;
+    color: var(--netflix-text) !important;
+    transition: var(--netflix-transition) !important;
+}
+
+.cardOverlayButton:hover {
+    background: var(--netflix-text) !important;
+    color: #000 !important;
+    border-color: var(--netflix-text) !important;
+    transform: scale(1.1);
+}
+
+/* Play button circle overlay */
+.cardOverlayFab-primary {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #000 !important;
+    border-radius: 50% !important;
+    transition: var(--netflix-transition) !important;
+}
+
+.cardOverlayFab-primary:hover {
+    background: var(--netflix-text) !important;
+    transform: scale(1.15);
+}
+
+/* ─── RESPONSIVE ADJUSTMENTS ─── */
+@media (max-width: 768px) {
+    .cardBox:hover {
+        transform: scale(1.02) translateY(-2px) !important;
+    }
+
+    .skipIntro .emby-button {
+        padding: 6px 16px !important;
+        font-size: 0.9em !important;
+    }
+
+    .detailButton-primary,
+    .btnPlay {
+        padding: 6px 20px !important;
+    }
+}
+
+/* ─── SMOOTH PAGE TRANSITIONS ─── */
+.page-withTabs,
+.itemDetailPage,
+.libraryPage {
+    animation: pageIn 0.3s ease forwards;
+}
+
+@keyframes pageIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
