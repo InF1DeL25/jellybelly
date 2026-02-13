@@ -1,7 +1,7 @@
 /*
  * ═══════════════════════════════════════════════════════
  *  JELLYBELLY - NETFLIX-STYLE THEME FOR JELLYFIN
- *  Fully responsive + video player safe
+ *  Elements only — no background overrides
  *  https://github.com/InF1DeL25/jellybelly
  * ═══════════════════════════════════════════════════════
  */
@@ -11,31 +11,15 @@
     --netflix-red: #E50914;
     --netflix-red-hover: #F40612;
     --netflix-red-dark: #B20710;
-    --netflix-bg: #141414;
-    --netflix-bg-light: #181818;
-    --netflix-bg-card: #1a1a1a;
-    --netflix-bg-elevated: #232323;
-    --netflix-bg-input: #333333;
     --netflix-text: #FFFFFF;
     --netflix-text-muted: #B3B3B3;
     --netflix-text-dim: #808080;
     --netflix-border: rgba(255, 255, 255, 0.1);
-    --netflix-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
     --netflix-radius: 4px;
     --netflix-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ─── GLOBAL FOUNDATION ─── */
-html {
-    background-color: var(--netflix-bg) !important;
-    color: var(--netflix-text) !important;
-    scrollbar-color: #444 transparent;
-}
-
-body, .mainAnimatedPages {
-    background-color: var(--netflix-bg) !important;
-}
-
+/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -54,7 +38,7 @@ body, .mainAnimatedPages {
     background: rgba(255, 255, 255, 0.3);
 }
 
-/* ─── TYPOGRAPHY (responsive) ─── */
+/* ─── TYPOGRAPHY ─── */
 .emby-tab-button,
 .headerTabs,
 body,
@@ -68,160 +52,14 @@ h1, h2, h3, .sectionTitle {
 }
 
 /* ═══════════════════════════════════════════════════════
-   VIDEO PLAYER — ABSOLUTE PRIORITY
-   These rules ensure nothing covers the video player.
+   TOP NAVIGATION — always visible
    ═══════════════════════════════════════════════════════ */
-
-/* When player is active, Jellyfin adds these classes */
-.videoPlayerContainer,
-.videoPlayerContainer video,
-video[src],
-.htmlvideoplayer,
-.htmlvideoplayer video,
-#videoPlayer,
-#videoPlayer video {
-    visibility: visible !important;
-    opacity: 1 !important;
-    z-index: 100 !important;
-    background: #000 !important;
-    position: relative !important;
-}
-
-/* Make sure the player container fills the screen */
-.videoPlayerContainer {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 100 !important;
-    background: #000 !important;
-}
-
-.videoPlayerContainer video {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: contain !important;
-    position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-}
-
-/* OSD controls sit above the video */
-.videoOsdBottom {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.85) 0%, transparent 100%) !important;
-    z-index: 101 !important;
-}
-
-.videoOsdTop {
-    background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, transparent 100%) !important;
-    z-index: 101 !important;
-}
-
-/* Make sure backdrop and other page elements don't bleed over player */
-body.hiddenViewMenuBar .skinHeader,
-body.hiddenViewMenuBar .mainDrawer,
-body.hiddenViewMenuBar .mainAnimatedPages,
-body.hiddenViewMenuBar .backdropImage {
-    z-index: 0 !important;
-}
-
-/* Player slider / progress */
-.mdl-slider::-webkit-slider-thumb,
-.osdTimeSlider .sliderBubble {
-    background: var(--netflix-red) !important;
-}
-
-.mdl-slider {
-    accent-color: var(--netflix-red) !important;
-}
-
-.sliderBubble-progress {
-    background: var(--netflix-red) !important;
-}
-
-.osdControls .paper-icon-button-light {
-    color: var(--netflix-text) !important;
-}
-
-.osdControls .paper-icon-button-light:hover {
-    color: var(--netflix-text) !important;
-    transform: scale(1.2);
-}
-
-.volumeSlider {
-    accent-color: var(--netflix-red) !important;
-}
-
-/* ─── SKIP INTRO BUTTON (NETFLIX STYLE) ─── */
-.skipIntro {
-    position: fixed !important;
-    bottom: 12% !important;
-    right: 3% !important;
-    z-index: 9999 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    animation: skipFadeIn 0.3s ease forwards;
-}
-
-.skipIntro .emby-button {
-    background: rgba(0, 0, 0, 0.7) !important;
-    color: var(--netflix-text) !important;
-    border: 2px solid rgba(255, 255, 255, 0.7) !important;
-    border-radius: 2px !important;
-    padding: clamp(4px, 1vh, 8px) clamp(12px, 3vw, 28px) !important;
-    font-size: clamp(0.8em, 1.5vw, 1.15em) !important;
-    font-weight: 500 !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase !important;
-    cursor: pointer !important;
-    transition: var(--netflix-transition) !important;
-    backdrop-filter: blur(4px) !important;
-}
-
-.skipIntro .emby-button:hover {
-    background: rgba(255, 255, 255, 0.95) !important;
-    color: #000000 !important;
-    border-color: #ffffff !important;
-}
-
-@keyframes skipFadeIn {
-    from { opacity: 0; transform: translateX(20px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-/* ═══════════════════════════════════════════════════════
-   TOP NAVIGATION BAR
-   ═══════════════════════════════════════════════════════ */
-
-.skinHeader,
-.headroom,
-.headroom--not-bottom,
-.headroom--pinned,
-.headroom--not-top {
-    background: var(--netflix-bg) !important;
-    box-shadow: 0 1px 0 var(--netflix-border) !important;
-    backdrop-filter: none !important;
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-}
 
 /* Prevent headroom from hiding the header */
 .skinHeader.headroom--unpinned {
-    background: var(--netflix-bg) !important;
-    display: flex !important;
-    visibility: visible !important;
     transform: translateY(0) !important;
     position: fixed !important;
     top: 0 !important;
-}
-
-.skinHeader.headroom--pinned.headroom--not-top {
-    background: var(--netflix-bg) !important;
-    transform: translateY(0) !important;
 }
 
 .headroom--unfixed,
@@ -287,13 +125,7 @@ body.hiddenViewMenuBar .backdropImage {
     display: none !important;
 }
 
-/* ─── SIDE NAVIGATION / DRAWER ─── */
-.mainDrawer,
-.navMenuOption,
-.mainDrawer-scrollContainer {
-    background: var(--netflix-bg) !important;
-}
-
+/* ─── SIDE NAVIGATION ─── */
 .navMenuOption {
     color: var(--netflix-text-muted) !important;
     border-radius: var(--netflix-radius);
@@ -304,25 +136,21 @@ body.hiddenViewMenuBar .backdropImage {
 
 .navMenuOption:hover {
     color: var(--netflix-text) !important;
-    background: var(--netflix-bg-elevated) !important;
 }
 
 .navMenuOption-selected {
     color: var(--netflix-text) !important;
-    background: transparent !important;
     font-weight: 700 !important;
 }
 
 /* ═══════════════════════════════════════════════════════
-   MEDIA CARDS (responsive scaling)
+   MEDIA CARDS
    ═══════════════════════════════════════════════════════ */
 
 .cardBox {
     border-radius: var(--netflix-radius) !important;
     overflow: visible !important;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease !important;
-    background: transparent !important;
-    box-shadow: none !important;
     margin: 2px;
     position: relative;
 }
@@ -350,7 +178,6 @@ body.hiddenViewMenuBar .backdropImage {
 }
 
 .cardOverlayContainer {
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.4) 40%, transparent 100%) !important;
     border-radius: var(--netflix-radius) !important;
     opacity: 0;
     transition: opacity 0.3s ease !important;
@@ -362,18 +189,10 @@ body.hiddenViewMenuBar .backdropImage {
 
 .cardFooter,
 .cardText {
-    background: transparent !important;
     color: var(--netflix-text-muted) !important;
     padding: 4px 2px !important;
     transition: var(--netflix-transition);
     font-size: clamp(11px, 1.1vw, 14px) !important;
-}
-
-.cardBox:hover .cardFooter {
-    background: var(--netflix-bg-light) !important;
-    border-radius: 0 0 6px 6px !important;
-    padding: clamp(4px, 0.8vh, 8px) clamp(6px, 1vw, 10px) !important;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6) !important;
 }
 
 .cardFooter .cardText:first-child {
@@ -381,13 +200,9 @@ body.hiddenViewMenuBar .backdropImage {
     font-weight: 600 !important;
 }
 
-.cardBox:hover .cardFooter .cardText {
-    color: var(--netflix-text-muted) !important;
-}
-
-.cardBox:hover .cardFooter .cardText:first-child {
-    color: var(--netflix-text) !important;
-    margin-bottom: 2px !important;
+.cardBox:hover .cardFooter {
+    border-radius: 0 0 6px 6px !important;
+    padding: clamp(4px, 0.8vh, 8px) clamp(6px, 1vw, 10px) !important;
 }
 
 /* Card indicators */
@@ -408,13 +223,8 @@ body.hiddenViewMenuBar .backdropImage {
     background: var(--netflix-red) !important;
 }
 
-/* Card overlay play button */
-.cardOverlayButtonContainer {
-    background: transparent !important;
-}
-
+/* Card overlay buttons */
 .cardOverlayButton {
-    background: rgba(0, 0, 0, 0.6) !important;
     border: 2px solid rgba(255, 255, 255, 0.7) !important;
     border-radius: 50% !important;
     color: var(--netflix-text) !important;
@@ -422,21 +232,18 @@ body.hiddenViewMenuBar .backdropImage {
 }
 
 .cardOverlayButton:hover {
-    background: var(--netflix-text) !important;
     color: #000 !important;
     border-color: var(--netflix-text) !important;
     transform: scale(1.1);
 }
 
 .cardOverlayFab-primary {
-    background: rgba(255, 255, 255, 0.9) !important;
     color: #000 !important;
     border-radius: 50% !important;
     transition: var(--netflix-transition) !important;
 }
 
 .cardOverlayFab-primary:hover {
-    background: var(--netflix-text) !important;
     transform: scale(1.15);
 }
 
@@ -446,10 +253,6 @@ body.hiddenViewMenuBar .backdropImage {
     color: var(--netflix-text) !important;
     font-size: clamp(1em, 2vw, 1.3em) !important;
     font-weight: 700 !important;
-}
-
-.sectionTitle:hover {
-    color: var(--netflix-text-muted) !important;
 }
 
 .sectionTitleTextButton {
@@ -463,24 +266,11 @@ body.hiddenViewMenuBar .backdropImage {
 }
 
 /* ═══════════════════════════════════════════════════════
-   DETAIL / ITEM PAGE (responsive)
+   DETAIL / ITEM PAGE
    ═══════════════════════════════════════════════════════ */
-
-.detailPageWrapperContainer {
-    background: var(--netflix-bg) !important;
-}
 
 .detailImageContainer {
     border-radius: var(--netflix-radius) !important;
-    box-shadow: var(--netflix-shadow) !important;
-}
-
-.backdropImage {
-    filter: brightness(0.4) !important;
-}
-
-.detailPagePrimaryContainer {
-    background: linear-gradient(0deg, var(--netflix-bg) 0%, rgba(20, 20, 20, 0.8) 50%, transparent 100%) !important;
 }
 
 .itemName,
@@ -525,7 +315,7 @@ body.hiddenViewMenuBar .backdropImage {
     font-size: clamp(10px, 1vw, 13px) !important;
 }
 
-/* ─── DETAIL PAGE BUTTONS (responsive spacing) ─── */
+/* ─── DETAIL PAGE BUTTON SPACING ─── */
 .detailButtons {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -542,7 +332,7 @@ body.hiddenViewMenuBar .backdropImage {
 }
 
 /* ═══════════════════════════════════════════════════════
-   BUTTONS (responsive sizing)
+   BUTTONS
    ═══════════════════════════════════════════════════════ */
 
 .emby-button,
@@ -554,6 +344,7 @@ body.hiddenViewMenuBar .backdropImage {
     font-weight: 600 !important;
 }
 
+/* Primary submit buttons */
 .button-submit,
 .emby-button.button-submit {
     background: var(--netflix-red) !important;
@@ -561,7 +352,6 @@ body.hiddenViewMenuBar .backdropImage {
     border: none !important;
     padding: clamp(6px, 1vh, 10px) clamp(14px, 2vw, 24px) !important;
     font-size: clamp(13px, 1.2vw, 16px) !important;
-    letter-spacing: 0.3px;
 }
 
 .button-submit:hover,
@@ -574,6 +364,7 @@ body.hiddenViewMenuBar .backdropImage {
     background: var(--netflix-red-dark) !important;
 }
 
+/* Play button */
 .detailButton-primary,
 .btnPlay {
     background: var(--netflix-text) !important;
@@ -592,10 +383,10 @@ body.hiddenViewMenuBar .backdropImage {
     transform: scale(1.02);
 }
 
+/* Secondary buttons */
 .detailButton,
 .btnResume,
 .emby-button.raised:not(.button-submit) {
-    background: rgba(109, 109, 110, 0.7) !important;
     color: var(--netflix-text) !important;
     border: none !important;
     border-radius: var(--netflix-radius) !important;
@@ -603,12 +394,6 @@ body.hiddenViewMenuBar .backdropImage {
     font-size: clamp(13px, 1.2vw, 16px) !important;
     transition: var(--netflix-transition) !important;
     margin: 0 !important;
-}
-
-.detailButton:hover,
-.btnResume:hover,
-.emby-button.raised:not(.button-submit):hover {
-    background: rgba(109, 109, 110, 0.4) !important;
 }
 
 .detailButtons .paper-icon-button-light {
@@ -630,7 +415,6 @@ body.hiddenViewMenuBar .backdropImage {
 .emby-input,
 .emby-textarea,
 .emby-select {
-    background: var(--netflix-bg-input) !important;
     color: var(--netflix-text) !important;
     border: 1px solid transparent !important;
     border-radius: var(--netflix-radius) !important;
@@ -643,7 +427,6 @@ body.hiddenViewMenuBar .backdropImage {
 .emby-textarea:focus,
 .emby-select:focus {
     border-color: var(--netflix-text) !important;
-    background: var(--netflix-bg-elevated) !important;
     outline: none !important;
 }
 
@@ -653,6 +436,7 @@ body.hiddenViewMenuBar .backdropImage {
     font-size: clamp(12px, 1.1vw, 15px) !important;
 }
 
+/* Checkboxes */
 .emby-checkbox:checked + span + .checkboxOutline {
     border-color: var(--netflix-red) !important;
     background: var(--netflix-red) !important;
@@ -662,19 +446,14 @@ body.hiddenViewMenuBar .backdropImage {
     color: var(--netflix-text-muted) !important;
 }
 
-/* ─── DIALOGS & MODALS ─── */
-.dialog,
-.formDialogContent,
-.dialogContainer .formDialogContent,
-.formDialogHeader {
-    background: var(--netflix-bg-light) !important;
-    color: var(--netflix-text) !important;
-    border-radius: 8px !important;
+/* Toggle */
+.emby-toggle:checked {
+    background: var(--netflix-red) !important;
 }
 
+/* ─── DIALOGS & MODALS ─── */
 .formDialogHeader {
     border-bottom: 1px solid var(--netflix-border) !important;
-    border-radius: 8px 8px 0 0 !important;
 }
 
 .formDialogHeaderTitle {
@@ -686,16 +465,9 @@ body.hiddenViewMenuBar .backdropImage {
     border-top: 1px solid var(--netflix-border) !important;
 }
 
-/* ─── LISTS & TABLES ─── */
-.listItem,
-.listItemBody {
-    background: transparent !important;
-    color: var(--netflix-text) !important;
-    border-bottom: 1px solid var(--netflix-border) !important;
-}
-
+/* ─── LISTS ─── */
 .listItem:hover {
-    background: var(--netflix-bg-elevated) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
 }
 
 .listItemBodyText {
@@ -707,54 +479,72 @@ body.hiddenViewMenuBar .backdropImage {
     color: var(--netflix-text-dim) !important;
 }
 
-/* ─── LIBRARY / HOME PAGE ─── */
-.homePage,
-.libraryPage {
-    background: var(--netflix-bg) !important;
-}
-
-.homePageSection {
-    margin-bottom: clamp(0.8em, 2vh, 1.5em) !important;
-}
-
-/* ─── EPISODES LIST ─── */
-.detailSection,
-.verticalSection {
-    background: transparent !important;
-}
-
 .listItem-border {
     border-color: var(--netflix-border) !important;
 }
 
-.episodeCard {
-    background: var(--netflix-bg-card) !important;
-    border-radius: var(--netflix-radius) !important;
-    transition: var(--netflix-transition);
+/* ─── VIDEO PLAYER CONTROLS ─── */
+.mdl-slider::-webkit-slider-thumb,
+.osdTimeSlider .sliderBubble {
+    background: var(--netflix-red) !important;
 }
 
-.episodeCard:hover {
-    background: var(--netflix-bg-elevated) !important;
+.mdl-slider {
+    accent-color: var(--netflix-red) !important;
 }
 
-/* ─── SEARCH ─── */
-.searchFields {
-    background: transparent !important;
+.sliderBubble-progress {
+    background: var(--netflix-red) !important;
 }
 
-.searchfields-txtSearch {
-    background: var(--netflix-bg-input) !important;
+.osdControls .paper-icon-button-light {
     color: var(--netflix-text) !important;
-    border: 1px solid var(--netflix-border) !important;
-    border-radius: var(--netflix-radius) !important;
 }
 
-/* ─── TOAST NOTIFICATIONS ─── */
-.toast {
-    background: var(--netflix-bg-elevated) !important;
+.osdControls .paper-icon-button-light:hover {
     color: var(--netflix-text) !important;
-    border-radius: var(--netflix-radius) !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+    transform: scale(1.2);
+}
+
+.volumeSlider {
+    accent-color: var(--netflix-red) !important;
+}
+
+/* ─── SKIP INTRO BUTTON ─── */
+.skipIntro {
+    position: fixed !important;
+    bottom: 12% !important;
+    right: 3% !important;
+    z-index: 9999 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    animation: skipFadeIn 0.3s ease forwards;
+}
+
+.skipIntro .emby-button {
+    background: rgba(0, 0, 0, 0.7) !important;
+    color: var(--netflix-text) !important;
+    border: 2px solid rgba(255, 255, 255, 0.7) !important;
+    border-radius: 2px !important;
+    padding: clamp(4px, 1vh, 8px) clamp(12px, 3vw, 28px) !important;
+    font-size: clamp(0.8em, 1.5vw, 1.15em) !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+    cursor: pointer !important;
+    transition: var(--netflix-transition) !important;
+    backdrop-filter: blur(4px) !important;
+}
+
+.skipIntro .emby-button:hover {
+    background: rgba(255, 255, 255, 0.95) !important;
+    color: #000000 !important;
+    border-color: #ffffff !important;
+}
+
+@keyframes skipFadeIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
 /* ─── LOADING SPINNER ─── */
@@ -766,63 +556,7 @@ body.hiddenViewMenuBar .backdropImage {
     border-color: var(--netflix-red) !important;
 }
 
-/* ─── LOGIN PAGE ─── */
-.loginPage {
-    background: var(--netflix-bg) !important;
-}
-
-.manualLoginForm .inputContainer {
-    background: var(--netflix-bg-input) !important;
-    border-radius: var(--netflix-radius) !important;
-}
-
-.cardContent-button {
-    border-radius: var(--netflix-radius) !important;
-    transition: var(--netflix-transition);
-}
-
-.cardContent-button:hover {
-    transform: scale(1.05);
-}
-
-/* ─── SETTINGS PAGES ─── */
-.adminDrawerLogo,
-.dashboardDocument .content-primary {
-    background: var(--netflix-bg) !important;
-}
-
-.paperList {
-    background: var(--netflix-bg-light) !important;
-    border-radius: 8px !important;
-    overflow: hidden;
-}
-
-/* ─── GUIDES & LIVE TV ─── */
-.programCell {
-    background: var(--netflix-bg-card) !important;
-    border: 1px solid var(--netflix-border) !important;
-    transition: var(--netflix-transition);
-}
-
-.programCell:hover {
-    background: var(--netflix-bg-elevated) !important;
-}
-
-/* ─── MISC POLISH ─── */
-*:focus {
-    outline: none !important;
-}
-
-::selection {
-    background: var(--netflix-red) !important;
-    color: var(--netflix-text) !important;
-}
-
-.horizontalSection > hr,
-.verticalSection > hr {
-    border-color: var(--netflix-border) !important;
-}
-
+/* ─── ALPHA PICKER ─── */
 .alphaPicker-letter {
     color: var(--netflix-text-dim) !important;
     transition: var(--netflix-transition);
@@ -834,38 +568,28 @@ body.hiddenViewMenuBar .backdropImage {
     color: var(--netflix-red) !important;
 }
 
-.noItemsMessage {
-    color: var(--netflix-text-dim) !important;
-}
-
-.actionSheet {
-    background: var(--netflix-bg-light) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7) !important;
-}
-
+/* ─── ACTION SHEET / CONTEXT MENU ─── */
 .actionSheetMenuItem {
     color: var(--netflix-text) !important;
     transition: var(--netflix-transition);
 }
 
 .actionSheetMenuItem:hover {
-    background: var(--netflix-bg-elevated) !important;
     color: var(--netflix-text) !important;
 }
 
-.subtitleAppearance-preview {
-    background: rgba(0, 0, 0, 0.8) !important;
-    border-radius: var(--netflix-radius) !important;
+/* ─── MISC ─── */
+*:focus {
+    outline: none !important;
 }
 
-.emby-button.show-focus:focus {
+::selection {
     background: var(--netflix-red) !important;
     color: var(--netflix-text) !important;
 }
 
-.emby-toggle:checked {
-    background: var(--netflix-red) !important;
+.noItemsMessage {
+    color: var(--netflix-text-dim) !important;
 }
 
 .listPaging .emby-button {
@@ -880,7 +604,6 @@ body.hiddenViewMenuBar .backdropImage {
    RESPONSIVE BREAKPOINTS
    ═══════════════════════════════════════════════════════ */
 
-/* Small screens / mobile portrait */
 @media (max-width: 480px) {
     .cardBox:hover {
         transform: scale(1.03) translateY(-2px) !important;
@@ -888,13 +611,10 @@ body.hiddenViewMenuBar .backdropImage {
 
     .detailButtons {
         gap: 6px !important;
-        flex-direction: row !important;
     }
 
-    .detailButton-primary,
-    .btnPlay,
-    .detailButton,
-    .btnResume {
+    .detailButton-primary, .btnPlay,
+    .detailButton, .btnResume {
         padding: 6px 12px !important;
         font-size: 12px !important;
     }
@@ -909,21 +629,11 @@ body.hiddenViewMenuBar .backdropImage {
         right: 2% !important;
     }
 
-    .skipIntro .emby-button {
-        padding: 4px 12px !important;
-        font-size: 0.75em !important;
-    }
-
     .itemName, .parentName {
         font-size: 1.2em !important;
     }
-
-    .overview-text, .itemOverview {
-        font-size: 13px !important;
-    }
 }
 
-/* Small screens / mobile landscape + small tablets */
 @media (min-width: 481px) and (max-width: 768px) {
     .cardBox:hover {
         transform: scale(1.05) translateY(-4px) !important;
@@ -933,10 +643,8 @@ body.hiddenViewMenuBar .backdropImage {
         gap: 8px !important;
     }
 
-    .detailButton-primary,
-    .btnPlay,
-    .detailButton,
-    .btnResume {
+    .detailButton-primary, .btnPlay,
+    .detailButton, .btnResume {
         padding: 7px 16px !important;
         font-size: 13px !important;
     }
@@ -945,14 +653,8 @@ body.hiddenViewMenuBar .backdropImage {
         padding: 5px 14px !important;
         font-size: 12px !important;
     }
-
-    .skipIntro .emby-button {
-        padding: 5px 16px !important;
-        font-size: 0.85em !important;
-    }
 }
 
-/* Medium screens / tablets */
 @media (min-width: 769px) and (max-width: 1024px) {
     .cardBox:hover {
         transform: scale(1.08) translateY(-6px) !important;
@@ -968,21 +670,18 @@ body.hiddenViewMenuBar .backdropImage {
     }
 }
 
-/* Large screens / desktops */
 @media (min-width: 1025px) and (max-width: 1440px) {
     .cardBox:hover {
         transform: scale(1.12) translateY(-8px) !important;
     }
 }
 
-/* Extra large screens / ultrawide */
 @media (min-width: 1441px) {
     .cardBox:hover {
         transform: scale(1.15) translateY(-10px) !important;
     }
 }
 
-/* Short/squat windows — reduce vertical expansion */
 @media (max-height: 500px) {
     .cardBox:hover {
         transform: scale(1.05) !important;
@@ -999,7 +698,7 @@ body.hiddenViewMenuBar .backdropImage {
     }
 }
 
-/* ─── SMOOTH PAGE TRANSITIONS ─── */
+/* ─── PAGE TRANSITIONS ─── */
 .page-withTabs,
 .itemDetailPage,
 .libraryPage {
