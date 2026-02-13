@@ -1,7 +1,7 @@
 /*
  * ═══════════════════════════════════════════════════════
  *  JELLYBELLY - NETFLIX-STYLE THEME FOR JELLYFIN
- *  Elements only — no background overrides
+ *  Elements only — no blocking overlays
  *  https://github.com/InF1DeL25/jellybelly
  * ═══════════════════════════════════════════════════════
  */
@@ -52,25 +52,17 @@ h1, h2, h3, .sectionTitle {
 }
 
 /* ═══════════════════════════════════════════════════════
-   TOP NAVIGATION — always visible
+   TOP NAVIGATION — prevent hiding, nothing else
    ═══════════════════════════════════════════════════════ */
 
-/* Prevent headroom from hiding the header */
-.skinHeader.headroom--unpinned {
-    transform: translateY(0) !important;
-    position: fixed !important;
-    top: 0 !important;
-}
-
+.skinHeader.headroom--unpinned,
 .headroom--unfixed,
 .headroom--unpinned {
     transform: translateY(0) !important;
-    position: fixed !important;
 }
 
 /* Header icons */
 .headerButton {
-    color: var(--netflix-text) !important;
     transition: var(--netflix-transition);
 }
 
@@ -344,7 +336,6 @@ h1, h2, h3, .sectionTitle {
     font-weight: 600 !important;
 }
 
-/* Primary submit buttons */
 .button-submit,
 .emby-button.button-submit {
     background: var(--netflix-red) !important;
@@ -364,7 +355,6 @@ h1, h2, h3, .sectionTitle {
     background: var(--netflix-red-dark) !important;
 }
 
-/* Play button */
 .detailButton-primary,
 .btnPlay {
     background: var(--netflix-text) !important;
@@ -383,7 +373,6 @@ h1, h2, h3, .sectionTitle {
     transform: scale(1.02);
 }
 
-/* Secondary buttons */
 .detailButton,
 .btnResume,
 .emby-button.raised:not(.button-submit) {
@@ -402,7 +391,6 @@ h1, h2, h3, .sectionTitle {
 }
 
 .paper-icon-button-light {
-    color: var(--netflix-text) !important;
     transition: var(--netflix-transition);
 }
 
@@ -415,7 +403,6 @@ h1, h2, h3, .sectionTitle {
 .emby-input,
 .emby-textarea,
 .emby-select {
-    color: var(--netflix-text) !important;
     border: 1px solid transparent !important;
     border-radius: var(--netflix-radius) !important;
     padding: clamp(8px, 1vh, 12px) clamp(10px, 1.5vw, 16px) !important;
@@ -436,7 +423,6 @@ h1, h2, h3, .sectionTitle {
     font-size: clamp(12px, 1.1vw, 15px) !important;
 }
 
-/* Checkboxes */
 .emby-checkbox:checked + span + .checkboxOutline {
     border-color: var(--netflix-red) !important;
     background: var(--netflix-red) !important;
@@ -446,7 +432,6 @@ h1, h2, h3, .sectionTitle {
     color: var(--netflix-text-muted) !important;
 }
 
-/* Toggle */
 .emby-toggle:checked {
     background: var(--netflix-red) !important;
 }
@@ -457,7 +442,6 @@ h1, h2, h3, .sectionTitle {
 }
 
 .formDialogHeaderTitle {
-    color: var(--netflix-text) !important;
     font-weight: 700 !important;
 }
 
@@ -466,10 +450,6 @@ h1, h2, h3, .sectionTitle {
 }
 
 /* ─── LISTS ─── */
-.listItem:hover {
-    background: rgba(255, 255, 255, 0.05) !important;
-}
-
 .listItemBodyText {
     color: var(--netflix-text-muted) !important;
     font-size: clamp(12px, 1.1vw, 15px) !important;
@@ -497,12 +477,7 @@ h1, h2, h3, .sectionTitle {
     background: var(--netflix-red) !important;
 }
 
-.osdControls .paper-icon-button-light {
-    color: var(--netflix-text) !important;
-}
-
 .osdControls .paper-icon-button-light:hover {
-    color: var(--netflix-text) !important;
     transform: scale(1.2);
 }
 
@@ -568,16 +543,6 @@ h1, h2, h3, .sectionTitle {
     color: var(--netflix-red) !important;
 }
 
-/* ─── ACTION SHEET / CONTEXT MENU ─── */
-.actionSheetMenuItem {
-    color: var(--netflix-text) !important;
-    transition: var(--netflix-transition);
-}
-
-.actionSheetMenuItem:hover {
-    color: var(--netflix-text) !important;
-}
-
 /* ─── MISC ─── */
 *:focus {
     outline: none !important;
@@ -590,14 +555,6 @@ h1, h2, h3, .sectionTitle {
 
 .noItemsMessage {
     color: var(--netflix-text-dim) !important;
-}
-
-.listPaging .emby-button {
-    color: var(--netflix-text-muted) !important;
-}
-
-.listPaging .emby-button:hover {
-    color: var(--netflix-text) !important;
 }
 
 /* ═══════════════════════════════════════════════════════
