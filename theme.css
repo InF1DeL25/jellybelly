@@ -838,3 +838,24 @@ h1, h2, h3, .sectionTitle {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* ─── DETAIL PAGE BUTTON SPACING ─── */
+.detailButtons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    align-items: center !important;
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+}
+
+.detailButtons .detailButton,
+.detailButtons .btnPlay,
+.detailButtons .detailButton-primary {
+    margin: 0 !important;
+    padding: 10px 24px !important;
+}
+
+.detailButtons .paper-icon-button-light {
+    margin: 0 4px !important;
+}
